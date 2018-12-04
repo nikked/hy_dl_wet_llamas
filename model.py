@@ -23,7 +23,35 @@ of the data in suitable batches. Here, you need to handle the dataloading yourse
 The easiest way is probably to create a custom `Dataset`. [See for example here for
 a tutorial](https://github.com/utkuozbulak/pytorch-custom-dataset-examples).
 """
+import json
+import os
+import sys
+from pprint import pprint
+
+
+REUTERS_JSON_FP = './train/reuters.json'
+
+
+def main():
+
+    if not os.path.exists(REUTERS_JSON_FP):
+        print(f'Could not find file {REUTERS_JSON_FP}. Please run data_preprocess.py first.')
+        sys.exit(1)
+
+    with open(REUTERS_JSON_FP, 'r') as file:
+        print(f'Opening file {REUTERS_JSON_FP}')
+        reuters_articles = json.load(file)
+
+    print(f'\nAmount of articles: {len(reuters_articles.keys())}\n')
+
+    for key, content in reuters_articles.items():
+        print(key)
+        pprint(content['topic_codes'])
+        pprint(content['headline'])
+        pprint(content['text'])
+        break
 
 
 if __name__ == "__main__":
-    print('Not yet implemented')
+
+    main()
