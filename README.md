@@ -22,11 +22,7 @@
 
 
 ### data_preprocess.py
-
-> There seems to be a bug at this scripts since only 299773 are retrieved at the moment.
-
-
-The only working component at the moment is `data_preprocess`. This script creates a super large `reuters.json` file which by default is in the `train/` directory. Please see what the JSON file output look likes by opening `reuters_sample.json`
+`data_preprocess` fetches the `reuters.zip` from cs.helsinki server and makes a huge JSON dump from xml-files found from `reuters.zip`. The dump is by default is in the `train/` directory. Please see what the JSON file output look likes by opening `reuters_sample.json`
 
 More specifically the `data_preprocess.py`:
 1. Fetches the Reuters articles from `https://www.cs.helsinki.fi/u/jgpyykko/`
@@ -42,5 +38,7 @@ Run the file by:
 
 
 ### model.py
+Currently just converts the `reuters.json` file to a Pandas DataFrame
 
-This file currently just holds an iterator for the `reuters.json`
+### Data mismatch
+There should be about 850K articles, but only 299773 xml-files where found. Either there is a bug or the issue is in source?
