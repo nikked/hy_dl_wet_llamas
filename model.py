@@ -26,6 +26,7 @@ a tutorial](https://github.com/utkuozbulak/pytorch-custom-dataset-examples).
 import json
 import os
 import sys
+import pandas as pd
 from pprint import pprint
 
 
@@ -44,12 +45,19 @@ def main():
 
     print(f'\nAmount of articles: {len(reuters_articles.keys())}\n')
 
+
+    df = pd.DataFrame(columns=['topic_codes', 'headline', 'text'])
+
     for key, content in reuters_articles.items():
         print(key)
         pprint(content['topic_codes'])
         pprint(content['headline'])
         pprint(content['text'])
+        df.loc[key] = [str(content['topic_codes']), content['headline'], str(content['text'])]
         break
+
+
+    pprint(df.describe())
 
 
 if __name__ == "__main__":
