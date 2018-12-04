@@ -1,6 +1,14 @@
 # News topic classification from Reuters articles
 
 
+## File descriptions
+* `data_preprocess.py`: Only working file at the moment. Converts the collection of Reuters XMLs to a single large JSON file.
+* `reuters_sample.json`: A small example snippet of the large JSON file
+* `model.py`: This is a skeleton for the actual deep learning classificator
+* `topic_codes.txt`: Descriptions of the target classes
+* `text_project.ipynb`: The exercise notebook as provided by instructors
+
+
 ## Requirements
 * Python 3.5+
 * pip
