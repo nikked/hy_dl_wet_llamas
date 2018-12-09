@@ -76,12 +76,19 @@ def grid_search_instance(
     parameters = model.parameters()
     optimizer = optim.Adam(parameters)
 
-    train_vector, loss_vector = [], []
-    for epoch in range(1, EPOCHS + 1):
-        print(f'Training epoch no {epoch}')
-        train(device, model, epoch, train_loader, optimizer,
-              criterion, train_vector, logs_per_epoch=7)
-        validate(device, model, test_loader, criterion, loss_vector)
+    train_error_message = ''
+
+    try:
+
+        train_vector, loss_vector = [], []
+        for epoch in range(1, EPOCHS + 1):
+            print(f'Training epoch no {epoch}')
+            train(device, model, epoch, train_loader, optimizer,
+                  criterion, train_vector, logs_per_epoch=7)
+            validate(device, model, test_loader, criterion, loss_vector)
+
+    except Exception as e:
+        train_error_message = str(e)
 
     try:
         with open(LOG_FP, "r") as file:
@@ -124,6 +131,7 @@ def grid_search_instance(
             "pAtK_3": pAtK_3,
             "pAtK_5": pAtK_5,
         },
+        "train_error_message": train_error_message
 
     }
 
