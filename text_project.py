@@ -7,6 +7,7 @@ import pandas as pd
 import json
 from datetime import datetime
 from torchtext import vocab
+import sys
 
 
 from ReutersDataset import ReutersDataset
@@ -237,8 +238,12 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-g', '--gpu_no', type='str')
+    parser.add_argument('-g', '--gpu_no', type=int)
 
     args = parser.parse_args()
+
+    if not args.gpu_no:
+        print('Please provide GPU no')
+        sys.exit(1)
 
     main(args.gpu_no)
