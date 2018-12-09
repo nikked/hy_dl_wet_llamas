@@ -242,7 +242,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if not args.gpu_no and args.gpu_no not 0:
+    if not args.gpu_no and args.gpu_no != 0:
         print('Please provide GPU no')
         sys.exit(1)
 
