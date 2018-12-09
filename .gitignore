@@ -2,3 +2,4 @@
 train/
 .ipynb_checkpoints/
 __pycache__/
+.vector_cache/
