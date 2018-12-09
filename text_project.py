@@ -1,3 +1,4 @@
+import argparse
 import torch
 import torch.optim as optim
 import torch.nn as nn
@@ -15,14 +16,13 @@ from performance_measures import calculate_f1_score, pAtK
 
 DF_FILEPATH = 'train/train.json.xz'
 LOG_FP = 'model_stats.json'
-GPU_NO = 1
 BATCH_SIZE = 512
 NUM_WORKERS = 15
 MAX_TXT_LEN = 500
 EPOCHS = 10
 
 
-def main():
+def main(gpu_no):
 
     gs_params = {
         "num_filters": [50, 100, 150, 200, 300],
@@ -41,8 +41,8 @@ def main():
                         bottleneck_fc_dim,
                         glove_dim,
                         batch_norm,
-                        GPU_NO,
-                        gs_params['filter_sizes'][GPU_NO],
+                        gpu_no,
+                        gs_params['filter_sizes'][gpu_no],
                     )
 
 
@@ -56,8 +56,7 @@ def grid_search_instance(
 
     train_start = str(datetime.now())
 
-    # device = torch.device("cuda:{}".format(gpu_no))
-    device = torch.device('cpu')
+    device = torch.device("cuda:{}".format(gpu_no))
 
     glove = vocab.GloVe(name="6B", dim=glove_dim)
 
@@ -235,4 +234,11 @@ def validate(device, model, test_loader, criterion, loss_vector):
 
 
 if __name__ == '__main__':
-    main()
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-g', '--gpu_no', type='str')
+
+    args = parser.parse_args()
+
+    main(args.gpu_no)
