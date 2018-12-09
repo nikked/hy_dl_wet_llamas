@@ -26,6 +26,7 @@ EPOCHS = 10
 def main(gpu_no):
 
     gs_params = {
+        "dropout_pctgs": [0.00, 0.36, 0.5],
         "num_filters": [50, 100, 150, 200, 300],
         "bottleneck_fc_dim": [10, 30, 50, 100],
         "glove_dim": [50, 100],
@@ -33,21 +34,24 @@ def main(gpu_no):
         "filter_sizes": [[3, 4, 5], [1, 3, 5], [1, 4, 7]],
     }
 
-    for num_filters in gs_params["num_filters"]:
-        for bottleneck_fc_dim in gs_params["bottleneck_fc_dim"]:
-            for glove_dim in gs_params["glove_dim"]:
-                for batch_norm in gs_params["batch_norm"]:
-                    grid_search_instance(
-                        num_filters,
-                        bottleneck_fc_dim,
-                        glove_dim,
-                        batch_norm,
-                        gpu_no,
-                        gs_params['filter_sizes'][gpu_no],
-                    )
+    for dropout_pctg in gs_params["dropout_pctgs"]:
+        for num_filters in gs_params["num_filters"]:
+            for bottleneck_fc_dim in gs_params["bottleneck_fc_dim"]:
+                for glove_dim in gs_params["glove_dim"]:
+                    for batch_norm in gs_params["batch_norm"]:
+                        grid_search_instance(
+                            dropout_pctg,
+                            num_filters,
+                            bottleneck_fc_dim,
+                            glove_dim,
+                            batch_norm,
+                            gpu_no,
+                            gs_params['filter_sizes'][gpu_no],
+                        )
 
 
 def grid_search_instance(
+        dropout_pctg,
         num_filters,
         bottleneck_fc_dim,
         glove_dim,
@@ -62,7 +66,7 @@ def grid_search_instance(
     glove = vocab.GloVe(name="6B", dim=glove_dim)
 
     model = Model(glove, num_filters, bottleneck_fc_dim,
-                  batch_norm, filter_sizes)
+                  batch_norm, dropout_pctg, filter_sizes)
 
     model = model.to(device)
 
@@ -71,7 +75,7 @@ def grid_search_instance(
         df, BATCH_SIZE, NUM_WORKERS, MAX_TXT_LEN, glove)
 
     # Train params
-    train_session_name = f"n_flt:{num_filters}, btl_dim:{bottleneck_fc_dim}, glove:{glove_dim},flt_sz:{filter_sizes},bn:{batch_norm}"
+    train_session_name = f"n_flt:{num_filters}, btl_dim:{bottleneck_fc_dim}, glove:{glove_dim},flt_sz:{filter_sizes},bn:{batch_norm},dd_pctg:{dropout_pctg}"
     criterion = nn.BCEWithLogitsLoss()
     parameters = model.parameters()
     optimizer = optim.Adam(parameters)
@@ -93,7 +97,7 @@ def grid_search_instance(
     try:
         with open(LOG_FP, "r") as file:
             model_stats = json.load(file)
-    except:
+    except Exception as e:
         model_stats = {}
 
     f1_score_2 = calculate_f1_score(device, model, test_loader, 2, BATCH_SIZE)
@@ -107,6 +111,7 @@ def grid_search_instance(
     model_str = str(model)
 
     model_stats[train_session_name] = {
+        "dropout_pctg": dropout_pctg,
         "num_filters": num_filters,
         "bottleneck_fc_dim": bottleneck_fc_dim,
         "glove_dim": glove_dim,
