@@ -94,12 +94,6 @@ def grid_search_instance(
     except Exception as e:
         train_error_message = str(e)
 
-    try:
-        with open(LOG_FP, "r") as file:
-            model_stats = json.load(file)
-    except Exception as e:
-        model_stats = {}
-
     f1_score_2 = calculate_f1_score(device, model, test_loader, 2, BATCH_SIZE)
     f1_score_3 = calculate_f1_score(device, model, test_loader, 3, BATCH_SIZE)
     f1_score_4 = calculate_f1_score(device, model, test_loader, 4, BATCH_SIZE)
@@ -107,6 +101,12 @@ def grid_search_instance(
     pAtK_1 = pAtK(device, model, test_loader, 1, BATCH_SIZE)
     pAtK_3 = pAtK(device, model, test_loader, 3, BATCH_SIZE)
     pAtK_5 = pAtK(device, model, test_loader, 5, BATCH_SIZE)
+
+    try:
+        with open(LOG_FP, "r") as file:
+            model_stats = json.load(file)
+    except Exception as e:
+        model_stats = {}
 
     model_str = str(model)
 
