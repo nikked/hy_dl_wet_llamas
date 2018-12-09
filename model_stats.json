@@ -1,0 +1,596 @@
+{
+  "n_flt:50, btl_dim:10, glove:50,flt_sz:[1, 4, 7],bn:True,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 50,
+    "batch_norm": true,
+    "filter_sizes": [
+      1,
+      4,
+      7
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.1944999451938119,
+      0.062120106205542126,
+      0.056107845581516595,
+      0.053566112951773166,
+      0.048483345678793636,
+      0.043937170188838665,
+      0.04250545585545688,
+      0.04166502350732769,
+      0.04108831423566282,
+      0.0405810368680298
+    ],
+    "loss_vector": [
+      0.07040058183720556,
+      0.057721624245583,
+      0.05445143574122655,
+      0.052440541338617516,
+      0.045133084185042624,
+      0.04322713783989519,
+      0.04233261374598843,
+      0.041764856521355906,
+      0.0413816623642283,
+      0.041081382877240745
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 50)\n  (conv1): Conv2d(1, 50, kernel_size=(1, 50), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(4, 50), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(7, 50), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:20:22.388201",
+    "train_finish": "2018-12-09 16:24:16.786160",
+    "f1_scores": {
+      "f1_score_2": 0.6248588730370522,
+      "f1_score_3": 0.6829688214564335,
+      "f1_score_4": 0.6462504980494992
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9257481461864406,
+      "pAtK_3": 0.7003663488700564,
+      "pAtK_5": 0.4888903601694915
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:50,flt_sz:[1, 4, 7],bn:False,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 50,
+    "batch_norm": false,
+    "filter_sizes": [
+      1,
+      4,
+      7
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.1421950119114578,
+      0.055745155262483366,
+      0.04710879790432313,
+      0.0430109357245733,
+      0.04071288770047039,
+      0.03924791854178883,
+      0.038178474658241306,
+      0.03735146648913226,
+      0.03666161963154175,
+      0.036106567165374304
+    ],
+    "loss_vector": [
+      0.06375071368480133,
+      0.049883346499527914,
+      0.044512825055142584,
+      0.0417255965708676,
+      0.03999571009712704,
+      0.03895557548661353,
+      0.03816356822469477,
+      0.03750347529174918,
+      0.037081810819395516,
+      0.036556736550341216
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 50)\n  (conv1): Conv2d(1, 50, kernel_size=(1, 50), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(4, 50), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(7, 50), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:24:17.595497",
+    "train_finish": "2018-12-09 16:28:08.453861",
+    "f1_scores": {
+      "f1_score_2": 0.6417941085907831,
+      "f1_score_3": 0.7084281602238184,
+      "f1_score_4": 0.6726123738660685
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.934520656779661,
+      "pAtK_3": 0.7264742231638418,
+      "pAtK_5": 0.5090704449152542
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:100,flt_sz:[1, 4, 7],bn:True,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 100,
+    "batch_norm": true,
+    "filter_sizes": [
+      1,
+      4,
+      7
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.12912599634965863,
+      0.046911188113225706,
+      0.04001910537057176,
+      0.03646813345758467,
+      0.03400400845047645,
+      0.032145617473198974,
+      0.030845972714659387,
+      0.029930558458564405,
+      0.029253371632472387,
+      0.028710714143752147
+    ],
+    "loss_vector": [
+      0.05295542046680289,
+      0.042339015941498644,
+      0.038044376519777004,
+      0.03557509676379673,
+      0.03369304266268924,
+      0.03240624932035551,
+      0.03134093411519366,
+      0.030719760963219708,
+      0.03052819476036702,
+      0.029948255868028788
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 100)\n  (conv1): Conv2d(1, 50, kernel_size=(1, 100), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(4, 100), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(7, 100), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:28:09.320622",
+    "train_finish": "2018-12-09 16:32:19.823544",
+    "f1_scores": {
+      "f1_score_2": 0.6711613466078209,
+      "f1_score_3": 0.752578484383827,
+      "f1_score_4": 0.7086294604386542
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9467028601694916,
+      "pAtK_3": 0.7717492055084746,
+      "pAtK_5": 0.5345471398305085
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:100,flt_sz:[1, 4, 7],bn:False,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 100,
+    "batch_norm": false,
+    "filter_sizes": [
+      1,
+      4,
+      7
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.15946226894318266,
+      0.05496301370508531,
+      0.04625771778584432,
+      0.042786576334507234,
+      0.04091547588611011,
+      0.039663059951514854,
+      0.03873723676071221,
+      0.03802795898331863,
+      0.037398371831346054,
+      0.03690722491415447
+    ],
+    "loss_vector": [
+      0.0631889148410094,
+      0.049109928562479505,
+      0.044140733778476715,
+      0.041885032113325796,
+      0.04073635993872659,
+      0.03974742013013969,
+      0.039152917310090386,
+      0.03859935340992475,
+      0.038392886645713095,
+      0.03783272055246062
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 100)\n  (conv1): Conv2d(1, 50, kernel_size=(1, 100), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(4, 100), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(7, 100), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:11:08.388521",
+    "train_finish": "2018-12-09 16:15:17.204837",
+    "f1_scores": {
+      "f1_score_2": 0.6310941188545621,
+      "f1_score_3": 0.6972372420843086,
+      "f1_score_4": 0.6559983691774538
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9395193326271186,
+      "pAtK_3": 0.7149982344632768,
+      "pAtK_5": 0.4945378707627119
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:30, glove:50,flt_sz:[1, 4, 7],bn:True,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 30,
+    "glove_dim": 50,
+    "batch_norm": true,
+    "filter_sizes": [
+      1,
+      4,
+      7
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.10026729797530898,
+      0.044536705911725025,
+      0.036681650856781954,
+      0.0331219570637032,
+      0.03112621474975766,
+      0.02985295336658181,
+      0.028981615381007856,
+      0.02833505149089521,
+      0.02780513619505703,
+      0.027352811422276767
+    ],
+    "loss_vector": [
+      0.05172890045885312,
+      0.03905467329136396,
+      0.034488324612631634,
+      0.03205572839005519,
+      0.03074535225533833,
+      0.029897648714861627,
+      0.029266634861291465,
+      0.028900643431786763,
+      0.028465886395108903,
+      0.028240449726581573
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 50)\n  (conv1): Conv2d(1, 50, kernel_size=(1, 50), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(4, 50), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(7, 50), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=30, bias=True)\n  (fc2): Linear(in_features=30, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:15:18.079465",
+    "train_finish": "2018-12-09 16:19:16.622939",
+    "f1_scores": {
+      "f1_score_2": 0.6738555886277326,
+      "f1_score_3": 0.7572054986145859,
+      "f1_score_4": 0.7166445826113547
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9436904131355932,
+      "pAtK_3": 0.7764940854519774,
+      "pAtK_5": 0.541452595338983
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:50,flt_sz:[3, 4, 5],bn:True,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 50,
+    "batch_norm": true,
+    "filter_sizes": [
+      3,
+      4,
+      5
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.13480004244810942,
+      0.054397409658108534,
+      0.04632531260573208,
+      0.0427707769047377,
+      0.04067659867923898,
+      0.039214140302598816,
+      0.03821905016672905,
+      0.037459262323334276,
+      0.03695177305949254,
+      0.0364576313623441
+    ],
+    "loss_vector": [
+      0.06189270784794274,
+      0.048621460416559445,
+      0.04402636199937028,
+      0.041592172710067134,
+      0.039990464067560134,
+      0.03901205773828393,
+      0.0382180077860416,
+      0.03766423018680791,
+      0.037281431131443735,
+      0.03695315990786431
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 50)\n  (conv1): Conv2d(1, 50, kernel_size=(3, 50), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(4, 50), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(5, 50), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:20:15.431806",
+    "train_finish": "2018-12-09 16:24:10.382454",
+    "f1_scores": {
+      "f1_score_2": 0.639536077183619,
+      "f1_score_3": 0.7074597153848223,
+      "f1_score_4": 0.6708981569852022
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9371358580508474,
+      "pAtK_3": 0.7254811087570622,
+      "pAtK_5": 0.5064221398305084
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:50,flt_sz:[1, 3, 5],bn:True,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 50,
+    "batch_norm": true,
+    "filter_sizes": [
+      1,
+      3,
+      5
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.1282428601222993,
+      0.052040485407188676,
+      0.04270724663104459,
+      0.03843646851391222,
+      0.03577126010163798,
+      0.033960858656825105,
+      0.032734842331235275,
+      0.031857330797406255,
+      0.031247182040558368,
+      0.03078124279145724
+    ],
+    "loss_vector": [
+      0.058658683262134005,
+      0.04598409297355151,
+      0.04002518358372026,
+      0.03701638487183442,
+      0.034854666913970045,
+      0.033472245874798905,
+      0.03244911380491014,
+      0.03187683246777219,
+      0.03153497245857271,
+      0.03117317703189486
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 50)\n  (conv1): Conv2d(1, 50, kernel_size=(1, 50), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(3, 50), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(5, 50), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:20:20.467346",
+    "train_finish": "2018-12-09 16:24:16.042591",
+    "f1_scores": {
+      "f1_score_2": 0.6639767012213896,
+      "f1_score_3": 0.7443682242487828,
+      "f1_score_4": 0.7021617664773308
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9431276483050848,
+      "pAtK_3": 0.763329802259887,
+      "pAtK_5": 0.5299126059322034
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:50,flt_sz:[3, 4, 5],bn:False,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 50,
+    "batch_norm": false,
+    "filter_sizes": [
+      3,
+      4,
+      5
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.15652506380736037,
+      0.047577517584277286,
+      0.04129165871178403,
+      0.03860110006307515,
+      0.0369804420489005,
+      0.03586276643600251,
+      0.03499236771133525,
+      0.03432493976386267,
+      0.033801606504610636,
+      0.033344652949067174
+    ],
+    "loss_vector": [
+      0.05505071315219847,
+      0.043116106635938255,
+      0.03976777928360438,
+      0.037972278356299564,
+      0.03681169033555661,
+      0.03589675281891378,
+      0.035288731867479065,
+      0.03472966574511285,
+      0.03444079761156591,
+      0.03409448452293873
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 50)\n  (conv1): Conv2d(1, 50, kernel_size=(3, 50), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(4, 50), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(5, 50), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:24:11.337012",
+    "train_finish": "2018-12-09 16:28:02.276678",
+    "f1_scores": {
+      "f1_score_2": 0.649376475418249,
+      "f1_score_3": 0.7215990100341645,
+      "f1_score_4": 0.6855014316027465
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9353151483050848,
+      "pAtK_3": 0.7399805790960452,
+      "pAtK_5": 0.5181408898305084
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:50,flt_sz:[1, 3, 5],bn:False,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 50,
+    "batch_norm": false,
+    "filter_sizes": [
+      1,
+      3,
+      5
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.12467811167579448,
+      0.04846205191944763,
+      0.04166385016812319,
+      0.03828645798694024,
+      0.03613705060089562,
+      0.03474805422438277,
+      0.033794170150098585,
+      0.03310528099961028,
+      0.03261432229793954,
+      0.03220448730623021
+    ],
+    "loss_vector": [
+      0.054706427000336726,
+      0.043916500410286045,
+      0.03975872657561706,
+      0.03720414518552311,
+      0.03549897642332619,
+      0.03456438421192816,
+      0.033769027661469025,
+      0.03326007970056291,
+      0.032839909543172785,
+      0.03262727552930177
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 50)\n  (conv1): Conv2d(1, 50, kernel_size=(1, 50), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(3, 50), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(5, 50), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:24:17.093261",
+    "train_finish": "2018-12-09 16:28:11.113063",
+    "f1_scores": {
+      "f1_score_2": 0.6566380991481064,
+      "f1_score_3": 0.7344793263928119,
+      "f1_score_4": 0.6949527895404971
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.939353813559322,
+      "pAtK_3": 0.7531890007062146,
+      "pAtK_5": 0.5249602754237288
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:100,flt_sz:[3, 4, 5],bn:True,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 100,
+    "batch_norm": true,
+    "filter_sizes": [
+      3,
+      4,
+      5
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.16996908634618293,
+      0.06214176551695114,
+      0.05401273759566177,
+      0.050761062142914565,
+      0.048961431841300605,
+      0.04777384097679064,
+      0.04691778229411684,
+      0.046217917561870374,
+      0.045523717865149936,
+      0.04501254064873907
+    ],
+    "loss_vector": [
+      0.07050712368750976,
+      0.05619423659676212,
+      0.05208508556677123,
+      0.049770710958262625,
+      0.04857738505480653,
+      0.047599731171030106,
+      0.047073941046403625,
+      0.046620323812052354,
+      0.04605621718249078,
+      0.04578648949578657
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 100)\n  (conv1): Conv2d(1, 50, kernel_size=(3, 100), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(4, 100), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(5, 100), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:28:03.155413",
+    "train_finish": "2018-12-09 16:32:14.209554",
+    "f1_scores": {
+      "f1_score_2": 0.5977753258749872,
+      "f1_score_3": 0.6442417883948028,
+      "f1_score_4": 0.6143753301025751
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9320709745762712,
+      "pAtK_3": 0.6606528072033898,
+      "pAtK_5": 0.46430746822033897
+    },
+    "train_error_message": ""
+  },
+  "n_flt:50, btl_dim:10, glove:100,flt_sz:[1, 3, 5],bn:True,dd_pctg:0.0": {
+    "dropout_pctg": 0.0,
+    "num_filters": 50,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 100,
+    "batch_norm": true,
+    "filter_sizes": [
+      1,
+      3,
+      5
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.20277752703235996,
+      0.043751433901700845,
+      0.03701703639902471,
+      0.034608806269614475,
+      0.03322763385452627,
+      0.032212059361686966,
+      0.03149891648604137,
+      0.03100619927062821,
+      0.030584428247340038,
+      0.030237598026584857
+    ],
+    "loss_vector": [
+      0.05441793875168946,
+      0.038789095262349665,
+      0.035611242434736026,
+      0.03419109582269596,
+      0.0332201751170017,
+      0.032792602744648014,
+      0.032109162375583485,
+      0.03192286262825384,
+      0.031632320229279795,
+      0.03152640252295187
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 100)\n  (conv1): Conv2d(1, 50, kernel_size=(1, 100), stride=(1, 1))\n  (bn1): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 50, kernel_size=(3, 100), stride=(1, 1))\n  (bn2): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 50, kernel_size=(5, 100), stride=(1, 1))\n  (bn3): BatchNorm2d(50, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=150, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)",
+    "train_start": "2018-12-09 16:28:12.107539",
+    "train_finish": "2018-12-09 16:32:14.526169",
+    "f1_scores": {
+      "f1_score_2": 0.663720106743303,
+      "f1_score_3": 0.7412799612622065,
+      "f1_score_4": 0.6981032421864141
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.947265625,
+      "pAtK_3": 0.7601628707627118,
+      "pAtK_5": 0.5258143538135593
+    },
+    "train_error_message": ""
+  }
+}
