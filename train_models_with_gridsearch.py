@@ -10,9 +10,9 @@ from torchtext import vocab
 import sys
 
 
-from ReutersDataset import ReutersDataset
-from ReutersModel import ReutersModel
-from performance_measures import calculate_f1_score, pAtK
+from .src.ReutersDataset import ReutersDataset
+from .src.ReutersModel import ReutersModel
+from .src.performance_measures import calculate_f1_score, pAtK
 
 
 DF_FILEPATH = 'train/train.json.xz'
