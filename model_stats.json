@@ -32668,5 +32668,113 @@
       "pAtK_5": 0.48485169491525426
     },
     "train_error_message": ""
+  },
+  "n_flt:150, btl_dim:30, glove:50,flt_sz:[1, 4, 7],bn:False,dd_pctg:0.5": {
+    "dropout_pctg": 0.5,
+    "num_filters": 150,
+    "bottleneck_fc_dim": 30,
+    "glove_dim": 50,
+    "batch_norm": false,
+    "filter_sizes": [
+      1,
+      4,
+      7
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.14562325210679866,
+      0.0764778782905166,
+      0.07100600000661736,
+      0.06789127391616352,
+      0.06553248683630403,
+      0.06368936295046752,
+      0.06188404123233437,
+      0.060536729069373636,
+      0.05918744954314133,
+      0.05795107313928387
+    ],
+    "loss_vector": [
+      0.06205746670395641,
+      0.053424827880778555,
+      0.050515226830365294,
+      0.04837435723866446,
+      0.04724890871320741,
+      0.04622589967260927,
+      0.04566738457750466,
+      0.04509300088225785,
+      0.0447580122341544,
+      0.04428523299047502
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 50)\n  (conv1): Conv2d(1, 150, kernel_size=(1, 50), stride=(1, 1))\n  (bn1): BatchNorm2d(150, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 150, kernel_size=(4, 50), stride=(1, 1))\n  (bn2): BatchNorm2d(150, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 150, kernel_size=(7, 50), stride=(1, 1))\n  (bn3): BatchNorm2d(150, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=450, out_features=30, bias=True)\n  (fc2): Linear(in_features=30, out_features=126, bias=True)\n  (dropout): Dropout(p=0.5)\n)",
+    "train_start": "2018-12-10 11:17:34.203257",
+    "train_finish": "2018-12-10 11:22:27.164721",
+    "f1_scores": {
+      "f1_score_2": 0.6074617674227651,
+      "f1_score_3": 0.6521184730853038,
+      "f1_score_4": 0.6324255705562402
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9290254237288136,
+      "pAtK_3": 0.6687301377118644,
+      "pAtK_5": 0.47954846398305084
+    },
+    "train_error_message": ""
+  },
+  "n_flt:150, btl_dim:10, glove:100,flt_sz:[3, 4, 5],bn:True,dd_pctg:0.5": {
+    "dropout_pctg": 0.5,
+    "num_filters": 150,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 100,
+    "batch_norm": true,
+    "filter_sizes": [
+      3,
+      4,
+      5
+    ],
+    "batch_size": 512,
+    "num_workers": 15,
+    "epochs": 10,
+    "max_txt_len": 500,
+    "train_vector": [
+      0.2983308914886254,
+      0.1534115751282766,
+      0.14033700473451072,
+      0.1277806331497216,
+      0.11658178537066113,
+      0.10641708955932161,
+      0.098482160233456,
+      0.09250938465405234,
+      0.08786168763771003,
+      0.08422811838322844
+    ],
+    "loss_vector": [
+      0.085067951957048,
+      0.08358333095655603,
+      0.08252627137353864,
+      0.0794754282145177,
+      0.07594075243351824,
+      0.07323390838958449,
+      0.07156096664020571,
+      0.07053916509878838,
+      0.06973543718962347,
+      0.06807471363473747
+    ],
+    "model": "Model(\n  (embedding): Embedding(400000, 100)\n  (conv1): Conv2d(1, 150, kernel_size=(3, 100), stride=(1, 1))\n  (bn1): BatchNorm2d(150, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv2): Conv2d(1, 150, kernel_size=(4, 100), stride=(1, 1))\n  (bn2): BatchNorm2d(150, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (conv3): Conv2d(1, 150, kernel_size=(5, 100), stride=(1, 1))\n  (bn3): BatchNorm2d(150, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  (fc1): Linear(in_features=450, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.5)\n)",
+    "train_start": "2018-12-10 11:19:42.894010",
+    "train_finish": "2018-12-10 11:26:57.623899",
+    "f1_scores": {
+      "f1_score_2": 0.45977881555988914,
+      "f1_score_3": 0.4627121835740995,
+      "f1_score_4": 0.4486244567785695
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.7161347987288136,
+      "pAtK_3": 0.4744990289548023,
+      "pAtK_5": 0.3491988877118644
+    },
+    "train_error_message": ""
   }
 }
