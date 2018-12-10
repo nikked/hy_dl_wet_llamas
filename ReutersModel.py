@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch
 
 
-class Model(nn.Module):
+class ReutersModel(nn.Module):
     def __init__(self, glove, num_filters, bottleneck_fc_dim, use_batch_norm, dropout_pctg, filter_sizes):
         super(Model, self).__init__()
 

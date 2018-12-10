@@ -11,7 +11,7 @@ import sys
 
 
 from ReutersDataset import ReutersDataset
-from Model import Model
+from ReutersModel import ReutersModel
 from performance_measures import calculate_f1_score, pAtK
 
 
@@ -23,9 +23,9 @@ MAX_TXT_LEN = 500
 EPOCHS = 10
 
 
-def main(gpu_no):
+def grid_search(gpu_no):
 
-    gs_params = {
+    searchspace = {
         "dropout_pctgs": [0.00, 0.36, 0.5],
         "num_filters": [50, 100, 150, 200, 300],
         "bottleneck_fc_dim": [10, 30, 50, 100],
@@ -34,23 +34,23 @@ def main(gpu_no):
         "filter_sizes": [[3, 4, 5], [1, 3, 5], [1, 4, 7]],
     }
 
-    for dropout_pctg in gs_params["dropout_pctgs"]:
-        for num_filters in gs_params["num_filters"]:
-            for bottleneck_fc_dim in gs_params["bottleneck_fc_dim"]:
-                for glove_dim in gs_params["glove_dim"]:
-                    for batch_norm in gs_params["batch_norm"]:
-                        grid_search_instance(
+    for dropout_pctg in searchspace["dropout_pctgs"]:
+        for num_filters in searchspace["num_filters"]:
+            for bottleneck_fc_dim in searchspace["bottleneck_fc_dim"]:
+                for glove_dim in searchspace["glove_dim"]:
+                    for batch_norm in searchspace["batch_norm"]:
+                        train_model(
                             dropout_pctg,
                             num_filters,
                             bottleneck_fc_dim,
                             glove_dim,
                             batch_norm,
                             gpu_no,
-                            gs_params['filter_sizes'][gpu_no],
+                            searchspace['filter_sizes'][gpu_no],
                         )
 
 
-def grid_search_instance(
+def train_model(
         dropout_pctg,
         num_filters,
         bottleneck_fc_dim,
@@ -259,4 +259,4 @@ if __name__ == '__main__':
         print('Please provide GPU no')
         sys.exit(1)
 
-    main(args.gpu_no)
+    grid_search(args.gpu_no)
