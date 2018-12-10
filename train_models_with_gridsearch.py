@@ -11,7 +11,7 @@ import sys
 
 
 from ReutersDataset import ReutersDataset
-from Model import Model
+from ReutersModel import ReutersModel
 from performance_measures import calculate_f1_score, pAtK
 
 
@@ -23,9 +23,9 @@ MAX_TXT_LEN = 500
 EPOCHS = 10
 
 
-def main(gpu_no):
+def grid_search(gpu_no):
 
-    gs_params = {
+    searchspace = {
         "dropout_pctgs": [0.00, 0.36, 0.5],
         "num_filters": [50, 100, 150, 200, 300],
         "bottleneck_fc_dim": [10, 30, 50, 100],
@@ -34,23 +34,23 @@ def main(gpu_no):
         "filter_sizes": [[3, 4, 5], [1, 3, 5], [1, 4, 7]],
     }
 
-    for dropout_pctg in gs_params["dropout_pctgs"]:
-        for num_filters in gs_params["num_filters"]:
-            for bottleneck_fc_dim in gs_params["bottleneck_fc_dim"]:
-                for glove_dim in gs_params["glove_dim"]:
-                    for batch_norm in gs_params["batch_norm"]:
-                        grid_search_instance(
+    for dropout_pctg in searchspace["dropout_pctgs"]:
+        for num_filters in searchspace["num_filters"]:
+            for bottleneck_fc_dim in searchspace["bottleneck_fc_dim"]:
+                for glove_dim in searchspace["glove_dim"]:
+                    for batch_norm in searchspace["batch_norm"]:
+                        train_model(
                             dropout_pctg,
                             num_filters,
                             bottleneck_fc_dim,
                             glove_dim,
                             batch_norm,
                             gpu_no,
-                            gs_params['filter_sizes'][gpu_no],
+                            searchspace['filter_sizes'][gpu_no],
                         )
 
 
-def grid_search_instance(
+def train_model(
         dropout_pctg,
         num_filters,
         bottleneck_fc_dim,
@@ -70,8 +70,8 @@ def grid_search_instance(
 
     model = model.to(device)
 
-    df = load_training_set_as_df()
-    train_loader, test_loader = get_loaders(
+    df = _load_training_set_as_df()
+    train_loader, test_loader = _get_loaders(
         df, BATCH_SIZE, NUM_WORKERS, MAX_TXT_LEN, glove)
 
     # Train params
@@ -87,20 +87,23 @@ def grid_search_instance(
         train_vector, loss_vector = [], []
         for epoch in range(1, EPOCHS + 1):
             print(f'Training epoch no {epoch}')
-            train(device, model, epoch, train_loader, optimizer,
-                  criterion, train_vector, logs_per_epoch=7)
-            validate(device, model, test_loader, criterion, loss_vector)
+            _train(device, model, epoch, train_loader, optimizer,
+                   criterion, train_vector, logs_per_epoch=7)
+            _validate(device, model, test_loader, criterion, loss_vector)
+
+        f1_score_2 = calculate_f1_score(
+            device, model, test_loader, 2, BATCH_SIZE)
+        f1_score_3 = calculate_f1_score(
+            device, model, test_loader, 3, BATCH_SIZE)
+        f1_score_4 = calculate_f1_score(
+            device, model, test_loader, 4, BATCH_SIZE)
+
+        pAtK_1 = pAtK(device, model, test_loader, 1, BATCH_SIZE)
+        pAtK_3 = pAtK(device, model, test_loader, 3, BATCH_SIZE)
+        pAtK_5 = pAtK(device, model, test_loader, 5, BATCH_SIZE)
 
     except Exception as e:
         train_error_message = str(e)
-
-    f1_score_2 = calculate_f1_score(device, model, test_loader, 2, BATCH_SIZE)
-    f1_score_3 = calculate_f1_score(device, model, test_loader, 3, BATCH_SIZE)
-    f1_score_4 = calculate_f1_score(device, model, test_loader, 4, BATCH_SIZE)
-
-    pAtK_1 = pAtK(device, model, test_loader, 1, BATCH_SIZE)
-    pAtK_3 = pAtK(device, model, test_loader, 3, BATCH_SIZE)
-    pAtK_5 = pAtK(device, model, test_loader, 5, BATCH_SIZE)
 
     try:
         with open(LOG_FP, "r") as file:
@@ -144,13 +147,13 @@ def grid_search_instance(
         json.dump(model_stats, file)
 
 
-def load_training_set_as_df():
+def _load_training_set_as_df():
     df = pd.read_json(DF_FILEPATH, compression='xz')
-    df = clean_df(df)
+    df = _clean_df(df)
     return df
 
 
-def clean_df(df):
+def _clean_df(df):
     df.headline.fillna(value=" ", inplace=True)
     df.title.fillna(value=" ", inplace=True)
 
@@ -171,7 +174,7 @@ def clean_df(df):
     return df
 
 
-def get_loaders(df, batch_size, num_workers, max_txt_len, glove):
+def _get_loaders(df, batch_size, num_workers, max_txt_len, glove):
 
     train_set = ReutersDataset(
         df.sample(frac=0.9, random_state=42), max_txt_len=max_txt_len, glove=glove)
@@ -181,32 +184,32 @@ def get_loaders(df, batch_size, num_workers, max_txt_len, glove):
     train_loader = torch.utils.data.DataLoader(
         dataset=train_set,
         batch_size=batch_size,
-        collate_fn=pad_collate,
+        collate_fn=_pad_collate,
         num_workers=num_workers,
         shuffle=True)
     test_loader = torch.utils.data.DataLoader(
         dataset=test_set,
         batch_size=batch_size,
-        collate_fn=pad_collate,
+        collate_fn=_pad_collate,
         num_workers=num_workers,
         shuffle=False)
 
     return train_loader, test_loader
 
 
-def pad_collate(batch):
+def _pad_collate(batch):
     max_len = max(map(lambda example: len(example[0]), batch))
     xs = [tup[0] for tup in batch]
-    xs = torch.stack(list(map(lambda x: pad_to_length(x, max_len), xs)))
+    xs = torch.stack(list(map(lambda x: _pad_to_length(x, max_len), xs)))
     ys = torch.stack([example[1] for example in batch])
     return xs, ys
 
 
-def pad_to_length(tensor, length):
+def _pad_to_length(tensor, length):
     return F.pad(tensor, (0, length - tensor.shape[0]), 'constant', 0)
 
 
-def train(device, model, epoch, train_loader, optimizer, criterion, train_vector, logs_per_epoch=7):
+def _train(device, model, epoch, train_loader, optimizer, criterion, train_vector, logs_per_epoch=7):
     # Set model to training mode
     model.train()
 
@@ -231,7 +234,7 @@ def train(device, model, epoch, train_loader, optimizer, criterion, train_vector
     train_vector.append(train_loss)
 
 
-def validate(device, model, test_loader, criterion, loss_vector):
+def _validate(device, model, test_loader, criterion, loss_vector):
     model.eval()
     val_loss = 0
     print('\nValidating...')
@@ -259,4 +262,4 @@ if __name__ == '__main__':
         print('Please provide GPU no')
         sys.exit(1)
 
-    main(args.gpu_no)
+    grid_search(args.gpu_no)
