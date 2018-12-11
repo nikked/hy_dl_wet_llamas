@@ -10,9 +10,9 @@ from torchtext import vocab
 import sys
 
 
-from .src.ReutersDataset import ReutersDataset
-from .src.ReutersModel import ReutersModel
-from .src.performance_measures import calculate_f1_score, pAtK
+from src.ReutersDataset import ReutersDataset
+from src.ReutersModel import ReutersModel
+from src.performance_measures import calculate_f1_score, pAtK
 
 
 DF_FILEPATH = 'train/train.json.xz'
@@ -23,7 +23,7 @@ MAX_TXT_LEN = 500
 EPOCHS = 10
 
 
-def grid_search(gpu_no):
+def grid_search(cpu_mode=False, gpu_no=0):
 
     searchspace = {
         "dropout_pctgs": [0.00, 0.36, 0.5],
@@ -47,6 +47,7 @@ def grid_search(gpu_no):
                             batch_norm,
                             gpu_no,
                             searchspace['filter_sizes'][gpu_no],
+                            cpu_mode
                         )
 
 
@@ -57,16 +58,27 @@ def train_model(
         glove_dim,
         batch_norm,
         gpu_no,
-        filter_sizes):
+        filter_sizes,
+        cpu_mode):
 
     train_start = str(datetime.now())
 
-    device = torch.device("cuda:{}".format(gpu_no))
+    if cpu_mode:
+        print(f'Using CPU. Too slow for anything serios.')
+        device = torch.device('cpu')
+
+    elif torch.cuda.is_available():
+        print(f'Using GPU. CUDA device #{gpu_no}')
+        device = torch.device("cuda:{}".format(gpu_no))
+
+    else:
+        print("Please use cpu_mode if you don't have cuda GPU available")
+        sys.exit(1)
 
     glove = vocab.GloVe(name="6B", dim=glove_dim)
 
-    model = Model(glove, num_filters, bottleneck_fc_dim,
-                  batch_norm, dropout_pctg, filter_sizes)
+    model = ReutersModel(glove, num_filters, bottleneck_fc_dim,
+                         batch_norm, dropout_pctg, filter_sizes)
 
     model = model.to(device)
 
@@ -255,11 +267,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-g', '--gpu_no', type=int)
+    parser.add_argument('-c', '--cpu_mode', action='store_true')
 
     args = parser.parse_args()
 
+    if args.cpu_mode:
+        grid_search(cpu_mode=args.cpu_mode)
+
     if not args.gpu_no and args.gpu_no != 0:
-        print('Please provide GPU no')
+        print('Please provide GPU # or use CPU')
         sys.exit(1)
 
-    grid_search(args.gpu_no)
+    grid_search(gpu_no=args.gpu_no)
