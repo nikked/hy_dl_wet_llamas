@@ -5,7 +5,7 @@ import torch
 
 class ReutersModel(nn.Module):
     def __init__(self, glove, num_filters, bottleneck_fc_dim, use_batch_norm, dropout_pctg, filter_sizes):
-        super(Model, self).__init__()
+        super(ReutersModel, self).__init__()
 
         output_dim = 126
 

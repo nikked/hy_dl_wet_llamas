@@ -64,7 +64,7 @@ def train_model(
     train_start = str(datetime.now())
 
     if cpu_mode:
-        print(f'Using CPU. Too slow for anything serios.')
+        print(f'Using CPU. Too slow for anything serial.')
         device = torch.device('cpu')
 
     elif torch.cuda.is_available():
@@ -95,7 +95,7 @@ def train_model(
     train_error_message = ''
 
     try:
-
+        print(f"Starting training: {train_session_name}")
         train_vector, loss_vector = [], []
         for epoch in range(1, EPOCHS + 1):
             print(f'Training epoch no {epoch}')
