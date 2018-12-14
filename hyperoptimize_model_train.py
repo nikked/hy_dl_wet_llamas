@@ -22,7 +22,7 @@ DF_FILEPATH = 'train/train.json.xz'
 LOG_FP = 'model_stats_hyperopt_181214.json'
 BATCH_SIZE = 512
 NUM_WORKERS = 15
-EPOCHS = 15
+EPOCHS = 20
 NO_OF_EVALS = 200
 
 
@@ -119,6 +119,11 @@ def train_model(
             _train(device, model, epoch, train_loader, optimizer,
                    criterion, train_vector, logs_per_epoch=7)
             _validate(device, model, test_loader, criterion, loss_vector)
+
+            # Make an early quit if the loss is not improving
+            if loss_vector.index(min(loss_vector)) < len(loss_vector) - 3:
+                print('Making an early quit since loss is not improving')
+                break
 
         f1_score_2 = calculate_f1_score(
             device, model, test_loader, 2, BATCH_SIZE)
