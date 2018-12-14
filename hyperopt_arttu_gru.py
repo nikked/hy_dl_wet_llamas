@@ -13,13 +13,13 @@ from hyperopt.mongoexp import MongoTrials
 from pprint import pprint
 
 from src.ReutersDataset import ReutersDataset
-from src.ReutersModel import ReutersModel
+from src.ArttuModels import GRU
 from src.performance_measures import calculate_f1_score, pAtK
 from src.gridsearch_util import load_training_set_as_df, get_loaders, train, validate
 
 
 DF_FILEPATH = 'train/train.json.xz'
-LOG_FP = 'model_stats_hyperopt_181214.json'
+LOG_FP = 'model_stats_hyperopt_GRU_181214.json'
 BATCH_SIZE = 256
 NUM_WORKERS = 15
 EPOCHS = 20
@@ -29,14 +29,11 @@ NO_OF_EVALS = 200
 def grid_search(cpu_mode=False, gpu_no=0):
 
     space = {
-        "dropout_pctg": hp.uniform("dropout_pctg", 0.01, 0.5),
-        "num_filters": hp.quniform("num_filters", 300, 800, 1.0),
-        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 50, 300, 1.0),
+        "hidden_dim": hp.quniform("hidden_dim", 50, 300, 1.0),
+        "num_layers": hp.quniform("num_layers", 1, 5, 1.0),
+        "bidirectional": hp.choice("bidirectional", [True, False]),
         "glove_dim": hp.choice("glove_dim", [50, 100]),
-        "batch_norm": hp.choice("batch_norm", [True, False]),
-        "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [1, 3, 5], [1, 4, 7]]),
         "txt_length": hp.quniform("txt_length", 500, 3000, 1.0),
-        "stride": hp.choice("stride", [1, 2]),
         "gpu_no": gpu_no,
         "cpu_mode": cpu_mode
     }
@@ -50,14 +47,11 @@ def grid_search(cpu_mode=False, gpu_no=0):
 def train_model(
         train_params):
 
-    dropout_pctg = train_params['dropout_pctg']
-    num_filters = int(train_params['num_filters'])
-    bottleneck_fc_dim = int(train_params['bottleneck_fc_dim'])
-    glove_dim = train_params['glove_dim']
-    batch_norm = train_params['batch_norm']
-    filter_sizes = train_params['filter_sizes']
+    bidirectional = train_params['bidirectional']
+    hidden_dim = int(train_params['hidden_dim'])
+    num_layers = int(train_params['num_layers'])
     txt_length = int(train_params['txt_length'])
-    stride = train_params['stride']
+    glove_dim = train_params['glove_dim']
     gpu_no = train_params['gpu_no']
     cpu_mode = train_params['cpu_mode']
 
@@ -75,8 +69,7 @@ def train_model(
 
     glove = vocab.GloVe(name="6B", dim=glove_dim)
 
-    model = ReutersModel(glove, num_filters, bottleneck_fc_dim,
-                         batch_norm, dropout_pctg, filter_sizes, stride)
+    model = GRU(glove, hidden_dim, num_layers, bidirectional)
 
     model = model.to(device)
 
@@ -85,7 +78,7 @@ def train_model(
         df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
 
     # Train params
-    train_session_name = f"n_flt:{num_filters}, btl_dim:{bottleneck_fc_dim}, glove:{glove_dim},flt_sz:{filter_sizes},bn:{batch_norm},do_pctg:{dropout_pctg},txt_length:{txt_length},stride:{stride}"
+    train_session_name = f"bidir:{bidirectional}, hidden_dim:{hidden_dim}, glove:{glove_dim},num_layers:{num_layers},txt_length:{txt_length}"
     criterion = nn.BCEWithLogitsLoss()
     parameters = model.parameters()
     optimizer = optim.Adam(parameters)
@@ -97,12 +90,11 @@ def train_model(
         model_stats = {}
 
     model_stats[train_session_name] = {
-        "dropout_pctg": dropout_pctg,
-        "num_filters": num_filters,
-        "bottleneck_fc_dim": bottleneck_fc_dim,
-        "glove_dim": glove_dim,
-        "batch_norm": batch_norm,
-        "filter_sizes": filter_sizes,
+        "bidirectional": bidirectional,
+        "hidden_dim": hidden_dim,
+        "num_layers": num_layers,
+        "txt_length": txt_length,
+        "glove_dim ": glove_dim,
         "batch_size": BATCH_SIZE,
         "num_workers": NUM_WORKERS,
         "epochs": EPOCHS,
@@ -114,7 +106,10 @@ def train_model(
     try:
         print(f"Starting training: {train_session_name}")
         train_vector, loss_vector = [], []
+
+        true_epochs = 0
         for epoch in range(1, EPOCHS + 1):
+            true_epochs += 1
             print(f'Training epoch no {epoch}')
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
@@ -150,6 +145,7 @@ def train_model(
 
         model_stats[train_session_name]["train_vector"] = train_vector
         model_stats[train_session_name]["loss_vector"] = loss_vector
+        model_stats[train_session_name]["epochs"] = true_epochs
 
     except Exception as e:
         train_error_message = str(e)
