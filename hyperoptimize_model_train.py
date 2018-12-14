@@ -23,28 +23,24 @@ LOG_FP = 'model_stats_hyperopt_181214.json'
 BATCH_SIZE = 512
 NUM_WORKERS = 15
 EPOCHS = 15
-NO_OF_EVALS = 500
+NO_OF_EVALS = 200
 
 
 def grid_search(cpu_mode=False, gpu_no=0):
 
     space = {
         "dropout_pctg": hp.uniform("dropout_pctg", 0.01, 0.5),
-        "num_filters": hp.quniform("num_filters", 50, 500, 1.0),
-        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 10, 300, 1.0),
+        "num_filters": hp.quniform("num_filters", 300, 800, 1.0),
+        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 50, 300, 1.0),
         "glove_dim": hp.choice("glove_dim", [50, 100]),
         "batch_norm": hp.choice("batch_norm", [True, False]),
         "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [1, 3, 5], [1, 4, 7]]),
-        "txt_length": hp.quniform("txt_length", 50, 3000, 1.0),
+        "txt_length": hp.quniform("txt_length", 500, 3000, 1.0),
         "gpu_no": gpu_no,
         "cpu_mode": cpu_mode
     }
 
-    if not cpu_mode:
-        trials = MongoTrials(
-            'mongo://localhost:1234/reuters_db/jobs', exp_key='exp1')
-    else:
-        trials = Trials()
+    trials = Trials()
 
     best = fmin(fn=train_model, space=space,
                 algo=tpe.suggest, max_evals=1000, trials=trials)
