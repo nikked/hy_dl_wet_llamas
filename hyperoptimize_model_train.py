@@ -13,7 +13,8 @@ import sys
 from src.ReutersDataset import ReutersDataset
 from src.ReutersModel import ReutersModel
 from src.performance_measures import calculate_f1_score, pAtK
-from hyperopt import hp, tpe, fmin, space_eval, Trials, MongoTrials
+from hyperopt import hp, tpe, fmin, space_eval, Trials
+from hyperopt.mongoexp import MongoTrials
 from pprint import pprint
 
 
