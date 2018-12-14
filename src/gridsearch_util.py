@@ -107,3 +107,19 @@ def validate(device, model, test_loader, criterion, loss_vector):
     loss_vector.append(val_loss)
 
     print('Validation set: Average loss: {:.4f}\n.'.format(val_loss))
+
+
+def fetch_device(cpu_mode, gpu_no):
+
+    # Fetch device
+    if cpu_mode:
+        print(f'Using CPU. Too slow for anything serial.')
+        return torch.device('cpu')
+
+    elif torch.cuda.is_available():
+        print(f'Using GPU. CUDA device #{gpu_no}')
+        return torch.device("cuda:{}".format(gpu_no))
+
+    else:
+        print("Please use cpu_mode if you don't have cuda GPU available")
+        sys.exit(1)
