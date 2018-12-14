@@ -36,6 +36,7 @@ def grid_search(cpu_mode=False, gpu_no=0):
         "batch_norm": hp.choice("batch_norm", [True, False]),
         "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [1, 3, 5], [1, 4, 7]]),
         "txt_length": hp.quniform("txt_length", 500, 3000, 1.0),
+        "stride": hp.choice("stride", [1, 2]),
         "gpu_no": gpu_no,
         "cpu_mode": cpu_mode
     }
@@ -56,6 +57,7 @@ def train_model(
     batch_norm = train_params['batch_norm']
     filter_sizes = train_params['filter_sizes']
     txt_length = int(train_params['txt_length'])
+    stride = train_params['stride']
     gpu_no = train_params['gpu_no']
     cpu_mode = train_params['cpu_mode']
 
@@ -74,7 +76,7 @@ def train_model(
     glove = vocab.GloVe(name="6B", dim=glove_dim)
 
     model = ReutersModel(glove, num_filters, bottleneck_fc_dim,
-                         batch_norm, dropout_pctg, filter_sizes)
+                         batch_norm, dropout_pctg, filter_sizes, stride)
 
     model = model.to(device)
 
@@ -83,7 +85,7 @@ def train_model(
         df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
 
     # Train params
-    train_session_name = f"n_flt:{num_filters}, btl_dim:{bottleneck_fc_dim}, glove:{glove_dim},flt_sz:{filter_sizes},bn:{batch_norm},dd_pctg:{dropout_pctg},txt_length:{txt_length}"
+    train_session_name = f"n_flt:{num_filters}, btl_dim:{bottleneck_fc_dim}, glove:{glove_dim},flt_sz:{filter_sizes},bn:{batch_norm},do_pctg:{dropout_pctg},txt_length:{txt_length},stride:{stride}"
     criterion = nn.BCEWithLogitsLoss()
     parameters = model.parameters()
     optimizer = optim.Adam(parameters)

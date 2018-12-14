@@ -4,7 +4,7 @@ import torch
 
 
 class ReutersModel(nn.Module):
-    def __init__(self, glove, num_filters, bottleneck_fc_dim, use_batch_norm, dropout_pctg, filter_sizes):
+    def __init__(self, glove, num_filters, bottleneck_fc_dim, use_batch_norm, dropout_pctg, filter_sizes, stride):
         super(ReutersModel, self).__init__()
 
         output_dim = 126
@@ -13,13 +13,13 @@ class ReutersModel(nn.Module):
         self.embedding = nn.Embedding.from_pretrained(
             glove.vectors, freeze=True)
         self.conv1 = nn.Conv2d(
-            1, num_filters, (filter_sizes[0], embedding_dim))
+            1, num_filters, (filter_sizes[0], embedding_dim), stride=stride)
         self.bn1 = nn.BatchNorm2d(num_filters)
         self.conv2 = nn.Conv2d(
-            1, num_filters, (filter_sizes[1], embedding_dim))
+            1, num_filters, (filter_sizes[1], embedding_dim), stride=stride)
         self.bn2 = nn.BatchNorm2d(num_filters)
         self.conv3 = nn.Conv2d(
-            1, num_filters, (filter_sizes[2], embedding_dim))
+            1, num_filters, (filter_sizes[2], embedding_dim), stride=stride)
         self.bn3 = nn.BatchNorm2d(num_filters)
         self.fc1 = nn.Linear(3 * num_filters, bottleneck_fc_dim)
         self.fc2 = nn.Linear(bottleneck_fc_dim, output_dim)
