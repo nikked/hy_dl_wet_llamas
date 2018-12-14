@@ -155,7 +155,7 @@ def train_model(
         train_error_message = str(e)
         model_stats[train_session_name]['train_error_message'] = train_error_message
 
-    model_stats[train_session_name][train_finish] = str(datetime.now())
+    model_stats[train_session_name]['train_finish'] = str(datetime.now())
     model_stats[train_session_name]["model"] = str(model)
 
     with open(LOG_FP, "w") as file:
