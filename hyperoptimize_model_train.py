@@ -92,28 +92,28 @@ def train_model(
 
     train_error_message = ''
 
-    try:
-        print(f"Starting training: {train_session_name}")
-        train_vector, loss_vector = [], []
-        for epoch in range(1, EPOCHS + 1):
-            print(f'Training epoch no {epoch}')
-            _train(device, model, epoch, train_loader, optimizer,
-                   criterion, train_vector, logs_per_epoch=7)
-            _validate(device, model, test_loader, criterion, loss_vector)
+    # try:
+    print(f"Starting training: {train_session_name}")
+    train_vector, loss_vector = [], []
+    for epoch in range(1, EPOCHS + 1):
+        print(f'Training epoch no {epoch}')
+        _train(device, model, epoch, train_loader, optimizer,
+               criterion, train_vector, logs_per_epoch=7)
+        _validate(device, model, test_loader, criterion, loss_vector)
 
-        f1_score_2 = calculate_f1_score(
-            device, model, test_loader, 2, BATCH_SIZE)
-        f1_score_3 = calculate_f1_score(
-            device, model, test_loader, 3, BATCH_SIZE)
-        f1_score_4 = calculate_f1_score(
-            device, model, test_loader, 4, BATCH_SIZE)
+    f1_score_2 = calculate_f1_score(
+        device, model, test_loader, 2, BATCH_SIZE)
+    f1_score_3 = calculate_f1_score(
+        device, model, test_loader, 3, BATCH_SIZE)
+    f1_score_4 = calculate_f1_score(
+        device, model, test_loader, 4, BATCH_SIZE)
 
-        pAtK_1 = pAtK(device, model, test_loader, 1, BATCH_SIZE)
-        pAtK_3 = pAtK(device, model, test_loader, 3, BATCH_SIZE)
-        pAtK_5 = pAtK(device, model, test_loader, 5, BATCH_SIZE)
+    pAtK_1 = pAtK(device, model, test_loader, 1, BATCH_SIZE)
+    pAtK_3 = pAtK(device, model, test_loader, 3, BATCH_SIZE)
+    pAtK_5 = pAtK(device, model, test_loader, 5, BATCH_SIZE)
 
-    except Exception as e:
-        train_error_message = str(e)
+    # except Exception as e:
+    #     train_error_message = str(e)
 
     try:
         with open(LOG_FP, "r") as file:
