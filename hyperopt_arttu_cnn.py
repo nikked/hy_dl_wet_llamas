@@ -15,7 +15,7 @@ from pprint import pprint
 from src.ReutersDataset import ReutersDataset
 from src.ArttuModels import CNN
 from src.performance_measures import calculate_f1_score, pAtK
-from src.gridsearch_util import load_training_set_as_df, get_loaders, train, validate
+from src.gridsearch_util import load_training_set_as_df, get_loaders, train, validate, fetch_device
 
 
 DF_FILEPATH = 'train/train.json.xz'
