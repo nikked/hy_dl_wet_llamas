@@ -18,36 +18,36 @@ from pprint import pprint
 
 
 DF_FILEPATH = 'train/train.json.xz'
-LOG_FP = 'model_stats_hyperopt.json'
+LOG_FP = 'model_stats_hyperopt_181214.json'
 BATCH_SIZE = 512
 NUM_WORKERS = 15
-MAX_TXT_LEN = 500
-EPOCHS = 10
+EPOCHS = 15
+NO_OF_EVALS = 500
 
 
 def grid_search(cpu_mode=False, gpu_no=0):
 
-    # searchspace = {
-    #     "dropout_pctgs": [0.00, 0.36, 0.5],
-    #     "num_filters": [50, 100, 150, 200, 300],
-    #     "bottleneck_fc_dim": [10, 30, 50, 100],
-    #     "glove_dim": [50, 100],
-    #     "batch_norm": [True, False],
-    #     "filter_sizes": [[3, 4, 5], [1, 3, 5], [1, 4, 7]],
-    # }
-    searchspace = {
+    space = {
         "dropout_pctg": hp.uniform("dropout_pctg", 0.01, 0.5),
         "num_filters": hp.quniform("num_filters", 50, 500, 1.0),
-        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 10, 200, 1.0),
+        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 10, 300, 1.0),
         "glove_dim": hp.choice("glove_dim", [50, 100]),
         "batch_norm": hp.choice("batch_norm", [True, False]),
         "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [1, 3, 5], [1, 4, 7]]),
+        "txt_length": hp.quniform("num_filters", 50, 3000, 1.0),
         "gpu_no": gpu_no,
         "cpu_mode": cpu_mode
     }
 
-    best = fmin(fn=train_model, space=searchspace,
-                algo=tpe.suggest, max_evals=100, trials=Trials())
+    if not cpu_mode:
+        trials = MongoTrials(
+            'mongo://localhost:1234/reuters_db/jobs', exp_key='exp1')
+    else:
+        trials = Trials()
+
+    best = fmin(fn=train_model, space=space,
+                algo=tpe.suggest, max_evals=1000, trials=trials)
+
 
 def train_model(
         train_params):
@@ -58,6 +58,7 @@ def train_model(
     glove_dim = train_params['glove_dim']
     batch_norm = train_params['batch_norm']
     filter_sizes = train_params['filter_sizes']
+    txt_length = int(train_params['txt_length'])
     gpu_no = train_params['gpu_no']
     cpu_mode = train_params['cpu_mode']
 
@@ -84,7 +85,7 @@ def train_model(
 
     df = _load_training_set_as_df()
     train_loader, test_loader = _get_loaders(
-        df, BATCH_SIZE, NUM_WORKERS, MAX_TXT_LEN, glove)
+        df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
 
     # Train params
     train_session_name = f"n_flt:{num_filters}, btl_dim:{bottleneck_fc_dim}, glove:{glove_dim},flt_sz:{filter_sizes},bn:{batch_norm},dd_pctg:{dropout_pctg}"
@@ -135,7 +136,7 @@ def train_model(
         "batch_size": BATCH_SIZE,
         "num_workers": NUM_WORKERS,
         "epochs": EPOCHS,
-        "max_txt_len": MAX_TXT_LEN,
+        "max_txt_len": txt_length,
         "train_vector": train_vector,
         "loss_vector": loss_vector,
         "model": model_str,
@@ -158,7 +159,7 @@ def train_model(
     with open(LOG_FP, "w") as file:
         json.dump(model_stats, file)
 
-    return f1_score_3
+    return min(loss_vector)
 
 
 def _load_training_set_as_df():
