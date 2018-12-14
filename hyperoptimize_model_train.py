@@ -88,7 +88,11 @@ def train_model(
     parameters = model.parameters()
     optimizer = optim.Adam(parameters)
 
-    train_error_message = ''
+    try:
+        with open(LOG_FP, "r") as file:
+            model_stats = json.load(file)
+    except Exception as e:
+        model_stats = {}
 
     model_stats[train_session_name] = {
         "dropout_pctg": dropout_pctg,
@@ -143,12 +147,6 @@ def train_model(
     except Exception as e:
         train_error_message = str(e)
         model_stats[train_session_name]['train_error_message'] = train_error_message
-
-    try:
-        with open(LOG_FP, "r") as file:
-            model_stats = json.load(file)
-    except Exception as e:
-        model_stats = {}
 
     model_stats[train_session_name][train_finish] = str(datetime.now())
     model_stats[train_session_name]["model"] = str(model)
