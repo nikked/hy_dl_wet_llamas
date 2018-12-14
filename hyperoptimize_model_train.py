@@ -159,7 +159,7 @@ def train_model(
     if loss_vector:
         return min(loss_vector)
 
-    else
+    else:
         return 1.0
 
 
