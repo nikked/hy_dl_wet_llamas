@@ -35,7 +35,7 @@ def grid_search(cpu_mode=False, gpu_no=0):
         "glove_dim": hp.choice("glove_dim", [50, 100]),
         "batch_norm": hp.choice("batch_norm", [True, False]),
         "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [1, 3, 5], [1, 4, 7]]),
-        "txt_length": hp.quniform("num_filters", 50, 3000, 1.0),
+        "txt_length": hp.quniform("txt_length", 50, 3000, 1.0),
         "gpu_no": gpu_no,
         "cpu_mode": cpu_mode
     }
