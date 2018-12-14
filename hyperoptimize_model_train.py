@@ -20,7 +20,7 @@ from pprint import pprint
 
 DF_FILEPATH = 'train/train.json.xz'
 LOG_FP = 'model_stats_hyperopt_181214.json'
-BATCH_SIZE = 512
+BATCH_SIZE = 256
 NUM_WORKERS = 15
 EPOCHS = 20
 NO_OF_EVALS = 200
