@@ -55,39 +55,14 @@ def train_model(
     gpu_no = train_params['gpu_no']
     cpu_mode = train_params['cpu_mode']
 
-    if cpu_mode:
-        print(f'Using CPU. Too slow for anything serial.')
-        device = torch.device('cpu')
-
-    elif torch.cuda.is_available():
-        print(f'Using GPU. CUDA device #{gpu_no}')
-        device = torch.device("cuda:{}".format(gpu_no))
-
-    else:
-        print("Please use cpu_mode if you don't have cuda GPU available")
-        sys.exit(1)
-
-    glove = vocab.GloVe(name="6B", dim=glove_dim)
-
-    model = GRU(glove, hidden_dim, num_layers, bidirectional)
-
-    model = model.to(device)
-
-    df = load_training_set_as_df(DF_FILEPATH)
-    train_loader, test_loader = get_loaders(
-        df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
-
-    # Train params
-    train_session_name = f"bidir:{bidirectional}, hidden_dim:{hidden_dim}, glove:{glove_dim},num_layers:{num_layers},txt_length:{txt_length}"
-    criterion = nn.BCEWithLogitsLoss()
-    parameters = model.parameters()
-    optimizer = optim.Adam(parameters)
-
+    # Initialize log for training session
     try:
         with open(LOG_FP, "r") as file:
             model_stats = json.load(file)
     except Exception as e:
         model_stats = {}
+
+    train_session_name = json.dumps(train_params)
 
     model_stats[train_session_name] = {
         "bidirectional": bidirectional,
@@ -101,9 +76,38 @@ def train_model(
         "txt_length": txt_length,
         'train_start': str(datetime.now()),
     }
-    loss_vector = None
+
+    # Fetch device
+    if cpu_mode:
+        print(f'Using CPU. Too slow for anything serial.')
+        device = torch.device('cpu')
+
+    elif torch.cuda.is_available():
+        print(f'Using GPU. CUDA device #{gpu_no}')
+        device = torch.device("cuda:{}".format(gpu_no))
+
+    else:
+        print("Please use cpu_mode if you don't have cuda GPU available")
+        sys.exit(1)
 
     try:
+        glove = vocab.GloVe(name="6B", dim=glove_dim)
+
+        model = GRU(glove, hidden_dim, num_layers, bidirectional)
+
+        model = model.to(device)
+
+        df = load_training_set_as_df(DF_FILEPATH)
+        train_loader, test_loader = get_loaders(
+            df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
+
+        # Train params
+        criterion = nn.BCEWithLogitsLoss()
+        parameters = model.parameters()
+        optimizer = optim.Adam(parameters)
+
+        loss_vector = None
+
         print(f"Starting training: {train_session_name}")
         train_vector, loss_vector = [], []
 
