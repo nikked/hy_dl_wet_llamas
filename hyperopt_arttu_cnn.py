@@ -83,18 +83,7 @@ def train_model(
         'train_start': str(datetime.now()),
     }
 
-    # Fetch device
-    if cpu_mode:
-        print(f'Using CPU. Too slow for anything serial.')
-        device = torch.device('cpu')
-
-    elif torch.cuda.is_available():
-        print(f'Using GPU. CUDA device #{gpu_no}')
-        device = torch.device("cuda:{}".format(gpu_no))
-
-    else:
-        print("Please use cpu_mode if you don't have cuda GPU available")
-        sys.exit(1)
+    device = fetch_device(cpu_mode, gpu_no)
 
     loss_vector = None
     try:
