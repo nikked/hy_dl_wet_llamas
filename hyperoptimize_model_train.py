@@ -59,8 +59,6 @@ def train_model(
     gpu_no = train_params['gpu_no']
     cpu_mode = train_params['cpu_mode']
 
-    train_start = str(datetime.now())
-
     if cpu_mode:
         print(f'Using CPU. Too slow for anything serial.')
         device = torch.device('cpu')
@@ -85,43 +83,12 @@ def train_model(
         df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
 
     # Train params
-    train_session_name = f"n_flt:{num_filters}, btl_dim:{bottleneck_fc_dim}, glove:{glove_dim},flt_sz:{filter_sizes},bn:{batch_norm},dd_pctg:{dropout_pctg}"
+    train_session_name = f"n_flt:{num_filters}, btl_dim:{bottleneck_fc_dim}, glove:{glove_dim},flt_sz:{filter_sizes},bn:{batch_norm},dd_pctg:{dropout_pctg},txt_length:{txt_length}"
     criterion = nn.BCEWithLogitsLoss()
     parameters = model.parameters()
     optimizer = optim.Adam(parameters)
 
     train_error_message = ''
-
-    # try:
-    print(f"Starting training: {train_session_name}")
-    train_vector, loss_vector = [], []
-    for epoch in range(1, EPOCHS + 1):
-        print(f'Training epoch no {epoch}')
-        _train(device, model, epoch, train_loader, optimizer,
-               criterion, train_vector, logs_per_epoch=7)
-        _validate(device, model, test_loader, criterion, loss_vector)
-
-    f1_score_2 = calculate_f1_score(
-        device, model, test_loader, 2, BATCH_SIZE)
-    f1_score_3 = calculate_f1_score(
-        device, model, test_loader, 3, BATCH_SIZE)
-    f1_score_4 = calculate_f1_score(
-        device, model, test_loader, 4, BATCH_SIZE)
-
-    pAtK_1 = pAtK(device, model, test_loader, 1, BATCH_SIZE)
-    pAtK_3 = pAtK(device, model, test_loader, 3, BATCH_SIZE)
-    pAtK_5 = pAtK(device, model, test_loader, 5, BATCH_SIZE)
-
-    # except Exception as e:
-    #     train_error_message = str(e)
-
-    try:
-        with open(LOG_FP, "r") as file:
-            model_stats = json.load(file)
-    except Exception as e:
-        model_stats = {}
-
-    model_str = str(model)
 
     model_stats[train_session_name] = {
         "dropout_pctg": dropout_pctg,
@@ -133,30 +100,67 @@ def train_model(
         "batch_size": BATCH_SIZE,
         "num_workers": NUM_WORKERS,
         "epochs": EPOCHS,
-        "max_txt_len": txt_length,
-        "train_vector": train_vector,
-        "loss_vector": loss_vector,
-        "model": model_str,
-        'train_start': train_start,
-        "train_finish": str(datetime.now()),
-        "f1_scores": {
+        "txt_length": txt_length,
+        'train_start': str(datetime.now()),
+    }
+    loss_vector = None
+
+    try:
+        print(f"Starting training: {train_session_name}")
+        train_vector, loss_vector = [], []
+        for epoch in range(1, EPOCHS + 1):
+            print(f'Training epoch no {epoch}')
+            _train(device, model, epoch, train_loader, optimizer,
+                   criterion, train_vector, logs_per_epoch=7)
+            _validate(device, model, test_loader, criterion, loss_vector)
+
+        f1_score_2 = calculate_f1_score(
+            device, model, test_loader, 2, BATCH_SIZE)
+        f1_score_3 = calculate_f1_score(
+            device, model, test_loader, 3, BATCH_SIZE)
+        f1_score_4 = calculate_f1_score(
+            device, model, test_loader, 4, BATCH_SIZE)
+
+        pAtK_1 = pAtK(device, model, test_loader, 1, BATCH_SIZE)
+        pAtK_3 = pAtK(device, model, test_loader, 3, BATCH_SIZE)
+        pAtK_5 = pAtK(device, model, test_loader, 5, BATCH_SIZE)
+
+        model_stats[train_session_name]['f1_scores'] = {
             "f1_score_2": f1_score_2,
             "f1_score_3": f1_score_3,
             "f1_score_4": f1_score_4,
-        },
-        "pAtK_scores": {
+        }
+
+        model_stats[train_session_name]['pAtK_scores'] = {
             "pAtK_1": pAtK_1,
             "pAtK_3": pAtK_3,
             "pAtK_5": pAtK_5,
-        },
-        "train_error_message": train_error_message
+        }
 
-    }
+        model_stats[train_session_name]["train_vector"] = train_vector
+        model_stats[train_session_name]["loss_vector"] = loss_vector
+
+    except Exception as e:
+        train_error_message = str(e)
+        model_stats[train_session_name]['train_error_message'] = train_error_message
+
+    try:
+        with open(LOG_FP, "r") as file:
+            model_stats = json.load(file)
+    except Exception as e:
+        model_stats = {}
+
+    model_stats[train_session_name][train_finish] = str(datetime.now())
+    model_stats[train_session_name]["model"] = str(model)
 
     with open(LOG_FP, "w") as file:
         json.dump(model_stats, file)
 
-    return min(loss_vector)
+    if loss_vector:
+        return min(loss_vector)
+
+    else
+        return 1.0
 
 
 def _load_training_set_as_df():
