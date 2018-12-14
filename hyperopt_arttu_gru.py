@@ -90,6 +90,7 @@ def train_model(
         print("Please use cpu_mode if you don't have cuda GPU available")
         sys.exit(1)
 
+    loss_vector = None
     try:
         glove = vocab.GloVe(name="6B", dim=glove_dim)
 
@@ -105,8 +106,6 @@ def train_model(
         criterion = nn.BCEWithLogitsLoss()
         parameters = model.parameters()
         optimizer = optim.Adam(parameters)
-
-        loss_vector = None
 
         print(f"Starting training: {train_session_name}")
         train_vector, loss_vector = [], []
