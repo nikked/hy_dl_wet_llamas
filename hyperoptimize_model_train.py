@@ -13,13 +13,13 @@ from hyperopt.mongoexp import MongoTrials
 from pprint import pprint
 
 from src.ReutersDataset import ReutersDataset
-from src.ReutersModel import ReutersModelStacked, ReutersModel
+from src.ReutersModel import ReutersModel, ReutersModelStacked
 from src.performance_measures import calculate_f1_score, pAtK
 from src.gridsearch_util import load_training_set_as_df, get_loaders, train, validate, fetch_device
 
 
 DF_FILEPATH = 'train/train.json.xz'
-LOG_FP = 'model_stats_hyperopt_181214.json'
+LOG_FP = 'model_stats_hyperopt_181215_optimized.json'
 BATCH_SIZE = 256
 NUM_WORKERS = 15
 EPOCHS = 20
@@ -30,12 +30,12 @@ def grid_search(cpu_mode=False, gpu_no=0):
 
     space = {
         "dropout_pctg": hp.uniform("dropout_pctg", 0.01, 0.5),
-        "num_filters": hp.quniform("num_filters", 300, 800, 1.0),
-        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 50, 300, 1.0),
-        "glove_dim": hp.choice("glove_dim", [50, 100]),
+        "num_filters": hp.quniform("num_filters", 600, 1200, 1.0),
+        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 200, 500, 1.0),
+        "glove_dim": hp.choice("glove_dim", [100]),
         "batch_norm": hp.choice("batch_norm", [True, False]),
-        "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [1, 3, 5], [1, 4, 7]]),
-        "txt_length": hp.quniform("txt_length", 500, 3000, 1.0),
+        "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [2, 3, 4], [4, 5, 6], [2, 3, 4, 5], [3, 4, 5, 6]]),
+        "txt_length": hp.quniform("txt_length", 500, 1000, 1.0),
         "stride": hp.choice("stride", [1, 2]),
         "gpu_no": gpu_no,
         "cpu_mode": cpu_mode
@@ -65,7 +65,7 @@ def train_model(
 
     glove = vocab.GloVe(name="6B", dim=glove_dim)
 
-    model = ReutersModelStacked(glove, num_filters, bottleneck_fc_dim,
+    model = ReutersModel(glove, num_filters, bottleneck_fc_dim,
                          batch_norm, dropout_pctg, filter_sizes, stride)
 
     model = model.to(device)

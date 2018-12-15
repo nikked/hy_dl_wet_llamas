@@ -22,7 +22,7 @@ class ReutersModel(nn.Module):
         self.batch_norms = nn.ModuleList(
             [nn.BatchNorm2d(num_filters) for filter in filter_sizes])
 
-        self.fc1 = nn.Linear(3 * num_filters, bottleneck_fc_dim)
+        self.fc1 = nn.Linear(len(filter_sizes) * num_filters, bottleneck_fc_dim)
         self.fc2 = nn.Linear(bottleneck_fc_dim, output_dim)
         self.use_batch_norm = use_batch_norm
 
@@ -69,7 +69,7 @@ class ReutersModelStacked(nn.Module):
                 nn.Conv2d(
                     in_channels=1,
                     out_channels=num_filters,
-                    kernel_size=(filter, embedding_dim),
+                    kernel_size=(2, embedding_dim),
                     stride=stride,
                 ),
                 nn.BatchNorm2d(num_filters)
