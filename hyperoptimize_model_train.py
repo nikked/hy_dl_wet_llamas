@@ -13,9 +13,9 @@ from hyperopt.mongoexp import MongoTrials
 from pprint import pprint
 
 from src.ReutersDataset import ReutersDataset
-from src.ReutersModel import ReutersModel
+from src.ReutersModel import ReutersModelStacked, ReutersModel
 from src.performance_measures import calculate_f1_score, pAtK
-from src.gridsearch_util import load_training_set_as_df, get_loaders, train, validate
+from src.gridsearch_util import load_training_set_as_df, get_loaders, train, validate, fetch_device
 
 
 DF_FILEPATH = 'train/train.json.xz'
@@ -50,7 +50,7 @@ def grid_search(cpu_mode=False, gpu_no=0):
 def train_model(
         train_params):
 
-    dropout_pctg = train_params['dropout_pctg']
+    dropout_pctg = round(train_params['dropout_pctg'], 2)
     num_filters = int(train_params['num_filters'])
     bottleneck_fc_dim = int(train_params['bottleneck_fc_dim'])
     glove_dim = train_params['glove_dim']
@@ -61,21 +61,11 @@ def train_model(
     gpu_no = train_params['gpu_no']
     cpu_mode = train_params['cpu_mode']
 
-    if cpu_mode:
-        print(f'Using CPU. Too slow for anything serial.')
-        device = torch.device('cpu')
-
-    elif torch.cuda.is_available():
-        print(f'Using GPU. CUDA device #{gpu_no}')
-        device = torch.device("cuda:{}".format(gpu_no))
-
-    else:
-        print("Please use cpu_mode if you don't have cuda GPU available")
-        sys.exit(1)
+    device = fetch_device(cpu_mode, gpu_no)
 
     glove = vocab.GloVe(name="6B", dim=glove_dim)
 
-    model = ReutersModel(glove, num_filters, bottleneck_fc_dim,
+    model = ReutersModelStacked(glove, num_filters, bottleneck_fc_dim,
                          batch_norm, dropout_pctg, filter_sizes, stride)
 
     model = model.to(device)
