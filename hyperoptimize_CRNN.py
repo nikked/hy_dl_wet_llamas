@@ -65,7 +65,10 @@ def test_grid_search():
         "stride": 1,
         "gpu_no": 0,
         "cpu_mode": True,
-        "test_mode": True
+        "test_mode": True,
+        "rnn_hidden_size": 3,
+        "rnn_num_layers": 1,
+        "rnn_bidirectional": False
     }
 
     trials = Trials()
@@ -99,32 +102,14 @@ def train_model(
     rnn_num_layers = int(train_params['rnn_num_layers'])
     rnn_bidirectional = train_params['rnn_bidirectional']
 
-    device = fetch_device(cpu_mode, gpu_no)
-
-    glove = vocab.GloVe(name="6B", dim=glove_dim)
-
-    model = CRNN(glove, num_filters, bottleneck_fc_dim,
-                 batch_norm, dropout_pctg, filter_sizes, stride,
-                 rnn_hidden_size, rnn_num_layers, rnn_bidirectional)
-
-    model = model.to(device)
-
-    df = load_training_set_as_df(DF_FILEPATH)
-    train_loader, test_loader = get_loaders(
-        df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
-
-    # Train params
-    train_session_name = json.dumps(train_params)
-
-    criterion = nn.BCEWithLogitsLoss()
-    parameters = model.parameters()
-    optimizer = optim.Adam(parameters)
-
     try:
         with open(LOG_FP, "r") as file:
             model_stats = json.load(file)
     except Exception as e:
         model_stats = {}
+
+    # Train params
+    train_session_name = json.dumps(train_params)
 
     model_stats[train_session_name] = {
         "dropout_pctg": dropout_pctg,
@@ -139,9 +124,28 @@ def train_model(
         "txt_length": txt_length,
         'train_start': str(datetime.now()),
     }
+
     loss_vector = None
 
     try:
+        device = fetch_device(cpu_mode, gpu_no)
+
+        glove = vocab.GloVe(name="6B", dim=glove_dim)
+
+        model = CRNN(glove, num_filters, bottleneck_fc_dim,
+                     batch_norm, dropout_pctg, filter_sizes, stride,
+                     rnn_hidden_size, rnn_num_layers, rnn_bidirectional)
+
+        model = model.to(device)
+
+        df = load_training_set_as_df(DF_FILEPATH)
+        train_loader, test_loader = get_loaders(
+            df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
+
+        criterion = nn.BCEWithLogitsLoss()
+        parameters = model.parameters()
+        optimizer = optim.Adam(parameters)
+
         print(f"Starting training: {train_session_name}")
         train_vector, loss_vector = [], []
         for epoch in range(1, EPOCHS + 1):
