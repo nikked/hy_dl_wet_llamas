@@ -115,7 +115,6 @@ class CRNN(nn.Module):
         # Pooling
         pooled = [F.max_pool1d(conv, conv.shape[-1]).squeeze(-1)
                   for conv in conved_layers]
-81
         X_conv = torch.cat((pooled), dim=-1)
 
         X = torch.cat((X_conv, h), dim=1)
