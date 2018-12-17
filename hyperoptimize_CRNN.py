@@ -34,7 +34,7 @@ def grid_search(cpu_mode=False, gpu_no=0):
         "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 200, 1000, 1.0),
         "glove_dim": hp.choice("glove_dim", [100]),
         "batch_norm": hp.choice("batch_norm", [True, False]),
-        "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6][1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5, 6]]),
+        "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5, 6]]),
         "txt_length": hp.quniform("txt_length", 500, 1000, 1.0),
         "stride": hp.choice("stride", [1]),
         "rnn_hidden_size": hp.quniform("rnn_hidden_size", 5, 100, 1.0),
@@ -51,7 +51,6 @@ def grid_search(cpu_mode=False, gpu_no=0):
 
 
 def test_grid_search():
-
 
     NUM_WORKERS = 0
 
@@ -73,7 +72,6 @@ def test_grid_search():
 
     # best = fmin(fn=train_model, space=space,
     #             algo=tpe.suggest, max_evals=1000, trials=trials)
-
 
     train_model(space)
 
