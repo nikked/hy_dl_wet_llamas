@@ -81,6 +81,8 @@ def train_model(
 
     if 'test_mode' in train_params:
         test_mode = True
+    else:
+        test_mode = False
 
     dropout_pctg = round(train_params['dropout_pctg'], 2)
     num_filters = int(train_params['num_filters'])
