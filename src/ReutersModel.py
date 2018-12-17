@@ -56,9 +56,9 @@ class ReutersModel(nn.Module):
 
 
 class CRNN(nn.Module):
-    def __init__(self, glove, num_filters, bottleneck_fc_dim, use_batch_norm, 
-        dropout_pctg, filter_sizes, stride
-        rnn_hidden_size, rnn_num_layers, rnn_bidirectional):
+    def __init__(self, glove, num_filters, bottleneck_fc_dim, use_batch_norm,
+                 dropout_pctg, filter_sizes, stride,
+                 rnn_hidden_size, rnn_num_layers, rnn_bidirectional):
         super(CRNN, self).__init__()
 
         output_dim = 126
