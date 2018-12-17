@@ -19,8 +19,8 @@ from src.gridsearch_util import load_training_set_as_df, get_loaders, train, val
 
 
 DF_FILEPATH = 'train/train.json.xz'
-LOG_FP = 'model_stats_hyperopt_CRNN.json'
-BATCH_SIZE = 256
+LOG_FP = 'model_stats_hyperopt_CRNN2.json'
+BATCH_SIZE = 128
 NUM_WORKERS = 15
 EPOCHS = 20
 NO_OF_EVALS = 5
