@@ -30,14 +30,14 @@ def grid_search(cpu_mode=False, gpu_no=0):
 
     space = {
         "dropout_pctg": hp.uniform("dropout_pctg", 0.01, 0.5),
-        "num_filters": hp.quniform("num_filters", 600, 1200, 1.0),
-        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 200, 1000, 1.0),
+        "num_filters": hp.quniform("num_filters", 500, 800, 1.0),
+        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 200, 300, 1.0),
         "glove_dim": hp.choice("glove_dim", [100]),
         "batch_norm": hp.choice("batch_norm", [True, False]),
         "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5, 6]]),
-        "txt_length": hp.quniform("txt_length", 500, 1000, 1.0),
+        "txt_length": hp.quniform("txt_length", 500, 600, 1.0),
         "stride": hp.choice("stride", [1]),
-        "rnn_hidden_size": hp.quniform("rnn_hidden_size", 5, 100, 1.0),
+        "rnn_hidden_size": hp.quniform("rnn_hidden_size", 5, 30, 1.0),
         "rnn_num_layers": hp.quniform("rnn_num_layers", 1, 3, 1.0),
         "rnn_bidirectional": hp.choice("rnn_bidirectional", [True, False]),
         "gpu_no": gpu_no,
