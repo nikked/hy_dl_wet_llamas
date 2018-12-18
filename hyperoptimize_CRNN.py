@@ -152,7 +152,7 @@ def train_model(
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
             validate(device, model, validation_loader, criterion, valid_vector, 'Validation')
-            validate(device, model, validation_loader, criterion, test_vector, 'Test')
+            validate(device, model, test_loader, criterion, test_vector, 'Test')
 
             # Make an early quit if the loss is not improving
             if valid_vector.index(min(valid_vector)) < len(valid_vector) - 2:
