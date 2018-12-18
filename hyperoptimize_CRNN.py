@@ -23,7 +23,7 @@ LOG_FP = 'model_stats_hyperopt_CRNN2.json'
 BATCH_SIZE = 64
 NUM_WORKERS = 15
 EPOCHS = 20
-NO_OF_EVALS = 5
+NO_OF_EVALS = 1000
 
 
 def grid_search(cpu_mode=False, gpu_no=0):
@@ -71,11 +71,6 @@ def test_grid_search():
         "rnn_bidirectional": False
     }
 
-    trials = Trials()
-
-    # best = fmin(fn=train_model, space=space,
-    #             algo=tpe.suggest, max_evals=1000, trials=trials)
-
     train_model(space)
 
 
@@ -118,6 +113,11 @@ def train_model(
         "glove_dim": glove_dim,
         "batch_norm": batch_norm,
         "filter_sizes": filter_sizes,
+
+        "rnn_hidden_size": rnn_hidden_size,
+        "rnn_num_layers": rnn_num_layers,
+        "rnn_bidirectional": rnn_bidirectional,
+
         "batch_size": BATCH_SIZE,
         "num_workers": NUM_WORKERS,
         "epochs": EPOCHS,
@@ -125,22 +125,22 @@ def train_model(
         'train_start': str(datetime.now()),
     }
 
+    test_loss = None
     loss_vector = None
 
     try:
-        device = fetch_device(cpu_mode, gpu_no)
 
         glove = vocab.GloVe(name="6B", dim=glove_dim)
 
+        df = load_training_set_as_df(DF_FILEPATH)
+        train_loader, validation_loader, test_loader = get_loaders(
+            df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
+
+        device = fetch_device(cpu_mode, gpu_no)
         model = CRNN(glove, num_filters, bottleneck_fc_dim,
                      batch_norm, dropout_pctg, filter_sizes, stride,
                      rnn_hidden_size, rnn_num_layers, rnn_bidirectional)
-
         model = model.to(device)
-
-        df = load_training_set_as_df(DF_FILEPATH)
-        train_loader, test_loader = get_loaders(
-            df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
 
         criterion = nn.BCEWithLogitsLoss()
         parameters = model.parameters()
@@ -152,12 +152,17 @@ def train_model(
             print(f'Training epoch no {epoch}')
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
-            validate(device, model, test_loader, criterion, loss_vector)
+            validate(device, model, validation_loader, criterion, loss_vector)
 
             # Make an early quit if the loss is not improving
             if loss_vector.index(min(loss_vector)) < len(loss_vector) - 2:
                 print('Making an early quit since loss is not improving')
                 break
+
+        test_loss = validate(device, model, test_loader,
+                             criterion, loss_vector)
+
+        model_stats["test_loss"] = test_loss
 
         f1_score_2 = calculate_f1_score(
             device, model, test_loader, 2, BATCH_SIZE)

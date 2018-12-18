@@ -35,10 +35,20 @@ def _clean_df(df):
 
 def get_loaders(df, batch_size, num_workers, max_txt_len, glove):
 
+    random_state = 42
+
+    train_df = df.sample(frac=0.8, random_state=random_state)
+    test_val_df = df.drop(train_df.index)
+
+    test_df = test_val_df.sample(frac=0.5, random_state=random_state)
+    valid_df = test_val_df.drop(test_df.index)
+
     train_set = ReutersDataset(
-        df.sample(frac=0.9, random_state=42), max_txt_len=max_txt_len, glove=glove)
+        train_df, max_txt_len=max_txt_len, glove=glove)
+    valid_set = ReutersDataset(
+        valid_df, max_txt_len=max_txt_len, glove=glove)
     test_set = ReutersDataset(
-        df.drop(train_set.df.index), max_txt_len=max_txt_len, glove=glove)
+        test_df, max_txt_len=max_txt_len, glove=glove)
 
     train_loader = torch.utils.data.DataLoader(
         dataset=train_set,
@@ -46,6 +56,12 @@ def get_loaders(df, batch_size, num_workers, max_txt_len, glove):
         collate_fn=_pad_collate,
         num_workers=num_workers,
         shuffle=True)
+    validation_loader = torch.utils.data.DataLoader(
+        dataset=valid_set,
+        batch_size=batch_size,
+        collate_fn=_pad_collate,
+        num_workers=num_workers,
+        shuffle=False)
     test_loader = torch.utils.data.DataLoader(
         dataset=test_set,
         batch_size=batch_size,
@@ -53,7 +69,7 @@ def get_loaders(df, batch_size, num_workers, max_txt_len, glove):
         num_workers=num_workers,
         shuffle=False)
 
-    return train_loader, test_loader
+    return train_loader, validation_loader, test_loader
 
 
 def _pad_collate(batch):
