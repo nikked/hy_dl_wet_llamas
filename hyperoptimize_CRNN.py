@@ -11,6 +11,7 @@ import sys
 from hyperopt import hp, tpe, fmin, space_eval, Trials
 from hyperopt.mongoexp import MongoTrials
 from pprint import pprint
+import os
 
 from src.ReutersDataset import ReutersDataset
 from src.ReutersModel import ReutersModel, ReutersModelStacked, CRNN
@@ -19,9 +20,15 @@ from src.gridsearch_util import load_training_set_as_df, get_loaders, train, val
 
 
 DF_FILEPATH = 'train/train.json.xz'
-LOG_FP = 'model_stats_hyperopt_CRNN2.json'
+
+LOG_DIR = 'log_jsons'
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
+LOG_FP = os.path.join(LOG_DIR, f'modelstats_CRNN_{str(datetime.now())}.json')
+
+
 BATCH_SIZE = 64
-NUM_WORKERS = 15
+NUM_WORKERS = 12
 EPOCHS = 20
 NO_OF_EVALS = 1000
 
@@ -151,14 +158,16 @@ def train_model(
             print(f'Training epoch no {epoch}')
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
-            validate(device, model, validation_loader, criterion, valid_vector, 'Validation')
-            validate(device, model, test_loader, criterion, test_vector, 'Test')
+            print('\nValidating...')
+            validate(device, model, validation_loader,
+                     criterion, valid_vector, 'Validation')
+            validate(device, model, test_loader,
+                     criterion, test_vector, 'Test')
 
             # Make an early quit if the loss is not improving
             if valid_vector.index(min(valid_vector)) < len(valid_vector) - 2:
                 print('Making an early quit since loss is not improving')
                 break
-
 
         f1_score_2 = calculate_f1_score(
             device, model, test_loader, 2, BATCH_SIZE)
@@ -223,7 +232,7 @@ if __name__ == '__main__':
     if args.cpu_mode:
         grid_search(cpu_mode=args.cpu_mode)
 
-    if not args.gpu_no and args.gpu_no != 0:
+    elif not args.gpu_no and args.gpu_no != 0:
         print('Please provide GPU # or use CPU')
         sys.exit(1)
 
