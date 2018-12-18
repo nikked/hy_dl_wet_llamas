@@ -109,7 +109,7 @@ def train(device, model, epoch, train_loader, optimizer, criterion, train_vector
     train_vector.append(train_loss)
 
 
-def validate(device, model, test_loader, criterion, loss_vector):
+def validate(device, model, test_loader, criterion, loss_vector, type):
     model.eval()
     val_loss = 0
     print('\nValidating...')
@@ -122,7 +122,7 @@ def validate(device, model, test_loader, criterion, loss_vector):
     val_loss /= len(test_loader)
     loss_vector.append(val_loss)
 
-    print('Validation set: Average loss: {:.4f}\n.'.format(val_loss))
+    print('{} set: Average loss: {:.4f}\n.'.format(type, val_loss))
 
 
 def fetch_device(cpu_mode, gpu_no):

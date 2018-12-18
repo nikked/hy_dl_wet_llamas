@@ -125,8 +125,7 @@ def train_model(
         'train_start': str(datetime.now()),
     }
 
-    test_loss = None
-    loss_vector = None
+    valid_vector = None
 
     try:
 
@@ -147,22 +146,19 @@ def train_model(
         optimizer = optim.Adam(parameters)
 
         print(f"Starting training: {train_session_name}")
-        train_vector, loss_vector = [], []
+        train_vector, valid_vector, test_vector = [], [], []
         for epoch in range(1, EPOCHS + 1):
             print(f'Training epoch no {epoch}')
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
-            validate(device, model, validation_loader, criterion, loss_vector)
+            validate(device, model, validation_loader, criterion, valid_vector, 'Validation')
+            validate(device, model, validation_loader, criterion, test_vector, 'Test')
 
             # Make an early quit if the loss is not improving
-            if loss_vector.index(min(loss_vector)) < len(loss_vector) - 2:
+            if valid_vector.index(min(valid_vector)) < len(valid_vector) - 2:
                 print('Making an early quit since loss is not improving')
                 break
 
-        test_loss = validate(device, model, test_loader,
-                             criterion, loss_vector)
-
-        model_stats["test_loss"] = test_loss
 
         f1_score_2 = calculate_f1_score(
             device, model, test_loader, 2, BATCH_SIZE)
@@ -188,7 +184,8 @@ def train_model(
         }
 
         model_stats[train_session_name]["train_vector"] = train_vector
-        model_stats[train_session_name]["loss_vector"] = loss_vector
+        model_stats[train_session_name]["valid_vector"] = valid_vector
+        model_stats[train_session_name]["test_vector"] = test_vector
 
     except Exception as e:
         if test_mode:
@@ -203,8 +200,8 @@ def train_model(
     with open(LOG_FP, "w") as file:
         json.dump(model_stats, file)
 
-    if loss_vector:
-        return min(loss_vector)
+    if valid_vector:
+        return min(valid_vector)
 
     else:
         return 1.0
