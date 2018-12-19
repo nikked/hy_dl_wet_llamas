@@ -163,7 +163,7 @@ def train_model(
         print(f'No of trainable params in model: {total_trainable_params}')
         train_vector, valid_vector, test_vector = [], [], []
         for epoch in range(1, epochs + 1):
-            print(f'Training epoch no {epoch}')
+            print(f'Training epoch no {epoch}/{epochs}')
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
             print('Validating...')
