@@ -29,7 +29,7 @@ LOG_FP = os.path.join(LOG_DIR, f'modelstats_CRNN_{str(datetime.now())}.json')
 
 BATCH_SIZE = 64
 NUM_WORKERS = 12
-EPOCHS = 20
+EPOCHS = 1
 NO_OF_EVALS = 1000
 
 
@@ -148,11 +148,16 @@ def train_model(
                      rnn_hidden_size, rnn_num_layers, rnn_bidirectional)
         model = model.to(device)
 
+        total_trainable_params = sum(p.numel()
+                                     for p in model.parameters() if p.requires_grad)
+        model_stats[train_session_name]['no_of_trainable_params'] = total_trainable_params
+
         criterion = nn.BCEWithLogitsLoss()
         parameters = model.parameters()
         optimizer = optim.Adam(parameters)
 
         print(f"Starting training: {train_session_name}")
+        print(f'No of trainable params in model: {total_trainable_params}')
         train_vector, valid_vector, test_vector = [], [], []
         for epoch in range(1, EPOCHS + 1):
             print(f'Training epoch no {epoch}')
@@ -230,7 +235,7 @@ if __name__ == '__main__':
     if args.test_mode:
         test_grid_search()
 
-    if args.cpu_mode:
+    elif args.cpu_mode:
         grid_search(cpu_mode=args.cpu_mode)
 
     elif not args.gpu_no and args.gpu_no != 0:
