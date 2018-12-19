@@ -29,7 +29,6 @@ LOG_FP = os.path.join(LOG_DIR, f'modelstats_CRNN_{str(datetime.now())}.json')
 
 BATCH_SIZE = 64
 NUM_WORKERS = 12
-EPOCHS = 1
 NO_OF_EVALS = 1000
 
 
@@ -47,6 +46,7 @@ def grid_search(cpu_mode=False, gpu_no=0):
         "rnn_hidden_size": hp.quniform("rnn_hidden_size", 50, 700, 1.0),
         "rnn_num_layers": hp.quniform("rnn_num_layers", 1, 15, 1.0),
         "rnn_bidirectional": hp.choice("rnn_bidirectional", [True]),
+        "epochs": 20,
         "gpu_no": gpu_no,
         "cpu_mode": cpu_mode
     }
@@ -75,7 +75,8 @@ def test_grid_search():
         "test_mode": True,
         "rnn_hidden_size": 3,
         "rnn_num_layers": 1,
-        "rnn_bidirectional": False
+        "rnn_bidirectional": False,
+        "epochs": 1
     }
 
     train_model(space)
@@ -89,6 +90,10 @@ def train_model(
     else:
         test_mode = False
 
+    gpu_no = train_params['gpu_no']
+    cpu_mode = train_params['cpu_mode']
+    epochs = train_params['epochs']
+
     dropout_pctg = round(train_params['dropout_pctg'], 2)
     num_filters = int(train_params['num_filters'])
     bottleneck_fc_dim = int(train_params['bottleneck_fc_dim'])
@@ -97,8 +102,6 @@ def train_model(
     filter_sizes = train_params['filter_sizes']
     txt_length = int(train_params['txt_length'])
     stride = train_params['stride']
-    gpu_no = train_params['gpu_no']
-    cpu_mode = train_params['cpu_mode']
 
     rnn_hidden_size = int(train_params['rnn_hidden_size'])
     rnn_num_layers = int(train_params['rnn_num_layers'])
@@ -127,7 +130,7 @@ def train_model(
 
         "batch_size": BATCH_SIZE,
         "num_workers": NUM_WORKERS,
-        "epochs": EPOCHS,
+        "epochs": epochs,
         "txt_length": txt_length,
         'train_start': str(datetime.now()),
     }
@@ -159,7 +162,7 @@ def train_model(
         print(f"Starting training: {train_session_name}")
         print(f'No of trainable params in model: {total_trainable_params}')
         train_vector, valid_vector, test_vector = [], [], []
-        for epoch in range(1, EPOCHS + 1):
+        for epoch in range(1, epochs + 1):
             print(f'Training epoch no {epoch}')
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
@@ -242,4 +245,5 @@ if __name__ == '__main__':
         print('Please provide GPU # or use CPU')
         sys.exit(1)
 
-    grid_search(gpu_no=args.gpu_no)
+    else:
+        grid_search(gpu_no=args.gpu_no)
