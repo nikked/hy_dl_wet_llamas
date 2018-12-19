@@ -36,17 +36,17 @@ NO_OF_EVALS = 1000
 def grid_search(cpu_mode=False, gpu_no=0):
 
     space = {
-        "dropout_pctg": hp.uniform("dropout_pctg", 0.01, 0.5),
-        "num_filters": hp.quniform("num_filters", 600, 1200, 1.0),
-        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 200, 500, 1.0),
+        "dropout_pctg": hp.uniform("dropout_pctg", 0.001, 0.5),
+        "num_filters": hp.quniform("num_filters", 600, 1500, 1.0),
+        "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 200, 600, 1.0),
         "glove_dim": hp.choice("glove_dim", [100]),
-        "batch_norm": hp.choice("batch_norm", [True, False]),
+        "batch_norm": hp.choice("batch_norm", [True]),
         "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5, 6]]),
-        "txt_length": hp.quniform("txt_length", 500, 800, 1.0),
-        "stride": hp.choice("stride", [1, 2]),
-        "rnn_hidden_size": hp.quniform("rnn_hidden_size", 5, 50, 1.0),
-        "rnn_num_layers": hp.quniform("rnn_num_layers", 1, 3, 1.0),
-        "rnn_bidirectional": hp.choice("rnn_bidirectional", [True, False]),
+        "txt_length": hp.quniform("txt_length", 400, 800, 1.0),
+        "stride": hp.choice("stride", [1]),
+        "rnn_hidden_size": hp.quniform("rnn_hidden_size", 5, 100, 1.0),
+        "rnn_num_layers": hp.quniform("rnn_num_layers", 1, 15, 1.0),
+        "rnn_bidirectional": hp.choice("rnn_bidirectional", [True]),
         "gpu_no": gpu_no,
         "cpu_mode": cpu_mode
     }
@@ -158,11 +158,12 @@ def train_model(
             print(f'Training epoch no {epoch}')
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
-            print('\nValidating...')
+            print('Validating...')
             validate(device, model, validation_loader,
                      criterion, valid_vector, 'Validation')
             validate(device, model, test_loader,
                      criterion, test_vector, 'Test')
+            print('\n')
 
             # Make an early quit if the loss is not improving
             if valid_vector.index(min(valid_vector)) < len(valid_vector) - 2:
