@@ -44,7 +44,7 @@ def grid_search(cpu_mode=False, gpu_no=0):
         "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5, 6]]),
         "txt_length": hp.quniform("txt_length", 400, 800, 1.0),
         "stride": hp.choice("stride", [1]),
-        "rnn_hidden_size": hp.quniform("rnn_hidden_size", 5, 100, 1.0),
+        "rnn_hidden_size": hp.quniform("rnn_hidden_size", 50, 700, 1.0),
         "rnn_num_layers": hp.quniform("rnn_num_layers", 1, 15, 1.0),
         "rnn_bidirectional": hp.choice("rnn_bidirectional", [True]),
         "gpu_no": gpu_no,
