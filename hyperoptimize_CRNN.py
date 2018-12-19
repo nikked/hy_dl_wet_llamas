@@ -148,6 +148,11 @@ def train_model(
                      rnn_hidden_size, rnn_num_layers, rnn_bidirectional)
         model = model.to(device)
 
+        total_trainable_params = sum(p.numel()
+                                   for p in model.parameters() if p.requires_grad)
+        model_stats[train_session_name]['no_of_trainable_params'] = total_trainable_params
+        print(f'No of params in model: {pytorch_total_params}')
+
         criterion = nn.BCEWithLogitsLoss()
         parameters = model.parameters()
         optimizer = optim.Adam(parameters)
