@@ -38,7 +38,7 @@ def grid_search(cpu_mode=False, gpu_no=0):
         "dropout_pctg": hp.uniform("dropout_pctg", 0.001, 0.5),
         "num_filters": hp.quniform("num_filters", 600, 1500, 1.0),
         "bottleneck_fc_dim": hp.quniform("bottleneck_fc_dim", 200, 600, 1.0),
-        "glove_dim": hp.choice("glove_dim", [100]),
+        "glove_dim": hp.choice("glove_dim", [100, 200, 300]),
         "batch_norm": hp.choice("batch_norm", [True]),
         "filter_sizes": hp.choice("filter_sizes", [[3, 4, 5], [2, 3, 4], [1, 2, 3], [1, 2, 3, 4, 5, 6], [1, 2, 3, 4, 5], [2, 3, 4, 5], [3, 4, 5, 6]]),
         "txt_length": hp.quniform("txt_length", 400, 800, 1.0),
