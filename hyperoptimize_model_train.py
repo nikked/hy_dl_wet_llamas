@@ -71,7 +71,7 @@ def train_model(
     model = model.to(device)
 
     df = load_training_set_as_df(DF_FILEPATH)
-    train_loader, test_loader = get_loaders(
+    train_loader, valid_loader, test_loader = get_loaders(
         df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
 
     # Train params
@@ -108,7 +108,7 @@ def train_model(
             print(f'Training epoch no {epoch}')
             train(device, model, epoch, train_loader, optimizer,
                   criterion, train_vector, logs_per_epoch=7)
-            validate(device, model, test_loader, criterion, loss_vector)
+            validate(device, model, valid_loader, criterion, loss_vector)
 
             # Make an early quit if the loss is not improving
             if loss_vector.index(min(loss_vector)) < len(loss_vector) - 3:
