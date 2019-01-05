@@ -129,4 +129,4 @@ def get_top_model_params():
 
 
 if __name__ == '__main__':
-    make_predictions()
+    evaluate_f1_scores()
