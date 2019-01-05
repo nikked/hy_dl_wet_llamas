@@ -1,4 +1,5 @@
 from pprint import pprint
+import argparse
 import os
 import json
 from sklearn import metrics
@@ -25,7 +26,8 @@ def evaluate_f1_scores():
 
         model = load_pretrained_model(model_params, glove)
 
-        train_loader, validation_loader, test_loader = get_loaders_with_df(glove, model_params)
+        train_loader, validation_loader, test_loader = get_loaders_with_df(
+            glove, model_params)
 
         accuracy, f1_score = measure(model, test_loader)
 
@@ -46,7 +48,8 @@ def make_predictions():
 
     model = load_pretrained_model(model_params, glove)
 
-    train_loader, validation_loader, test_loader = get_loaders_with_df(glove, model_params)
+    train_loader, validation_loader, test_loader = get_loaders_with_df(
+        glove, model_params)
 
     predictions = predict(model, test_loader, device=torch.device('cuda'))
 
@@ -129,4 +132,16 @@ def get_top_model_params():
 
 
 if __name__ == '__main__':
-    evaluate_f1_scores()
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-e', '--evaluate', type=int)
+    parser.add_argument('-p', '--predict', action='store_true')
+
+    args = parser.parse_args()
+
+    if args.evaluate:
+        evaluate_f1_scores()
+
+    else:
+        make_predictions()
+
