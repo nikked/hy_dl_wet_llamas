@@ -38,63 +38,9 @@ def evaluate_f1_scores():
 def make_predictions():
 
     model_name = "{\"batch_norm\": true, \"bottleneck_fc_dim\": 530.0, \"cpu_mode\": false, \"dropout_pctg\": 0.1776, \"epochs\": 20, \"filter_sizes\": [1, 2, 3], \"glove_dim\": 300, \"gpu_no\": 1, \"num_filters\": 762.0, \"rnn_bidirectional\": true, \"rnn_hidden_size\": 652.0, \"rnn_num_layers\": 1.0, \"stride\": 1, \"txt_length\": 775.0}"
-    model_params = json.loads("""
-    {
-    "dropout_pctg": 0.18,
-    "num_filters": 762,
-    "bottleneck_fc_dim": 530,
-    "glove_dim": 300,
-    "batch_norm": true,
-    "filter_sizes": [
-      1,
-      2,
-      3
-    ],
-    "rnn_hidden_size": 652,
-    "rnn_num_layers": 1,
-    "rnn_bidirectional": true,
-    "batch_size": 64,
-    "num_workers": 12,
-    "epochs": 20,
-    "txt_length": 775,
-    "train_start": "2019-01-05 12:21:32.543911",
-    "no_of_trainable_params": 7080642,
-    "train_session_hash": "3e5408c8a262291c11430ea31abb6640",
-    "f1_scores": {
-      "f1_score_2": 0.7213569420012582,
-      "f1_score_3": 0.8189189189189189,
-      "f1_score_4": 0.7713218182998174
-    },
-    "pAtK_scores": {
-      "pAtK_1": 0.97278118336887,
-      "pAtK_3": 0.8445828891257996,
-      "pAtK_5": 0.582795842217484
-    },
-    "train_vector": [
-      0.024522422156629642,
-      0.016864232985320696,
-      0.014754938896747432,
-      0.013250884166873967,
-      0.01206366778545185
-    ],
-    "valid_vector": [
-      0.01780163169181201,
-      0.016153606050374754,
-      0.01592947110143512,
-      0.016451834844224758,
-      0.017033416760846107
-    ],
-    "test_vector": [
-      0.017564620340127807,
-      0.01606286458694922,
-      0.015831404966292286,
-      0.016214815305986764,
-      0.016792302983981777
-    ],
-    "train_finish": "2019-01-05 13:20:57.479166",
-    "model": "CRNN(\n  (embedding): Embedding(400000, 300)\n  (convs): ModuleList(\n    (0): Conv2d(1, 762, kernel_size=(1, 300), stride=(1, 1))\n    (1): Conv2d(1, 762, kernel_size=(2, 300), stride=(1, 1))\n    (2): Conv2d(1, 762, kernel_size=(3, 300), stride=(1, 1))\n  )\n  (batch_norms): ModuleList(\n    (0): BatchNorm2d(762, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (1): BatchNorm2d(762, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (2): BatchNorm2d(762, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  )\n  (gru): GRU(300, 652, batch_first=True, dropout=0.18, bidirectional=True)\n  (fc1): Linear(in_features=3590, out_features=530, bias=True)\n  (fc2): Linear(in_features=530, out_features=126, bias=True)\n  (dropout): Dropout(p=0.18)\n)"
-  }
-    """)
+    models = get_top_model_params()
+
+    model_params = models[model_name]
 
     glove = vocab.GloVe(name="6B", dim=model_params['glove_dim'])
 
