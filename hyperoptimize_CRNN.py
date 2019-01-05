@@ -244,6 +244,8 @@ def train_model(
             MODELS_DIR,
             train_session_hash + '.pkl')
 
+        model_stats[train_session_name]['train_session_hash'] = train_session_hash
+
         for epoch in range(1, epochs + 1):
             print(f'Training epoch no {epoch}/{epochs}')
             train(device, model, epoch, train_loader, optimizer,
