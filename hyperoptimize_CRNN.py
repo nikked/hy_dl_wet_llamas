@@ -94,26 +94,6 @@ def run_best_models():
     spaces = [
         {
             "batch_norm": True,
-            "bottleneck_fc_dim": 530.0,
-            "cpu_mode": False,
-            "dropout_pctg": 0.1776,
-            "epochs": 20,
-            "filter_sizes": [
-                1,
-                2,
-                3
-            ],
-            "glove_dim": 300,
-            "gpu_no": gpu_no,
-            "num_filters": 762.0,
-            "rnn_bidirectional": True,
-            "rnn_hidden_size": 652.0,
-            "rnn_num_layers": 1.0,
-            "stride": 1,
-            "txt_length": 775.0
-        },
-        {
-            "batch_norm": True,
             "bottleneck_fc_dim": 517.0,
             "cpu_mode": False,
             "dropout_pctg": 0.0406,
@@ -155,6 +135,28 @@ def run_best_models():
             "rnn_num_layers": 8.0,
             "stride": 1,
             "txt_length": 784.0
+        },
+        {
+            "batch_norm": True,
+            "bottleneck_fc_dim": 597.0,
+            "cpu_mode": False,
+            "dropout_pctg": 0.0035064775698738504,
+            "epochs": 20,
+            "filter_sizes": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "glove_dim": 300,
+            "gpu_no": gpu_no,
+            "num_filters": 777.0,
+            "rnn_bidirectional": True,
+            "rnn_hidden_size": 62.0,
+            "rnn_num_layers": 8.0,
+            "stride": 1,
+            "txt_length": 746.0
         }
 
     ]
