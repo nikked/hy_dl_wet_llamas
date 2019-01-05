@@ -1,0 +1,273 @@
+{
+  "{\"batch_norm\": true, \"bottleneck_fc_dim\": 517.0, \"cpu_mode\": false, \"dropout_pctg\": 0.0406, \"epochs\": 20, \"filter_sizes\": [1, 2, 3, 4, 5], \"glove_dim\": 200, \"gpu_no\": 0, \"num_filters\": 1144.0, \"rnn_bidirectional\": true, \"rnn_hidden_size\": 173.0, \"rnn_num_layers\": 1.0, \"stride\": 1, \"txt_length\": 728.0}": {
+    "dropout_pctg": 0.04,
+    "num_filters": 1144,
+    "bottleneck_fc_dim": 517,
+    "glove_dim": 200,
+    "batch_norm": true,
+    "filter_sizes": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "rnn_hidden_size": 173,
+    "rnn_num_layers": 1,
+    "rnn_bidirectional": true,
+    "batch_size": 64,
+    "num_workers": 12,
+    "epochs": 20,
+    "txt_length": 728,
+    "train_start": "2019-01-05 13:09:31.498090",
+    "no_of_trainable_params": 7040317,
+    "train_session_hash": "ddcf4858e33214f046f666b2a1c1c49e",
+    "f1_scores": {
+      "f1_score_2": 0.7221530283381056,
+      "f1_score_3": 0.8179821255518467,
+      "f1_score_4": 0.770227797402164
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9738472814498934,
+      "pAtK_3": 0.8436167377398721,
+      "pAtK_5": 0.5827425373134328
+    },
+    "train_vector": [
+      0.025593729207655982,
+      0.01775398374355737,
+      0.01549543931137516,
+      0.013713487689462843,
+      0.012152169811342551
+    ],
+    "valid_vector": [
+      0.018940325846760545,
+      0.01670923394482158,
+      0.01610722133370021,
+      0.01626132829521876,
+      0.016262897775808312
+    ],
+    "test_vector": [
+      0.018836052877816565,
+      0.016536338437499524,
+      0.016037789623199433,
+      0.016204702755265525,
+      0.016171516809882575
+    ],
+    "train_finish": "2019-01-05 14:08:34.228139",
+    "model": "CRNN(\n  (embedding): Embedding(400000, 200)\n  (convs): ModuleList(\n    (0): Conv2d(1, 1144, kernel_size=(1, 200), stride=(1, 1))\n    (1): Conv2d(1, 1144, kernel_size=(2, 200), stride=(1, 1))\n    (2): Conv2d(1, 1144, kernel_size=(3, 200), stride=(1, 1))\n    (3): Conv2d(1, 1144, kernel_size=(4, 200), stride=(1, 1))\n    (4): Conv2d(1, 1144, kernel_size=(5, 200), stride=(1, 1))\n  )\n  (batch_norms): ModuleList(\n    (0): BatchNorm2d(1144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (1): BatchNorm2d(1144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (2): BatchNorm2d(1144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (3): BatchNorm2d(1144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (4): BatchNorm2d(1144, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  )\n  (gru): GRU(200, 173, batch_first=True, dropout=0.04, bidirectional=True)\n  (fc1): Linear(in_features=6066, out_features=517, bias=True)\n  (fc2): Linear(in_features=517, out_features=126, bias=True)\n  (dropout): Dropout(p=0.04)\n)"
+  },
+  "{\"batch_norm\": true, \"bottleneck_fc_dim\": 598.0, \"cpu_mode\": false, \"dropout_pctg\": 0.0031, \"epochs\": 20, \"filter_sizes\": [1, 2, 3, 4, 5], \"glove_dim\": 300, \"gpu_no\": 0, \"num_filters\": 796.0, \"rnn_bidirectional\": true, \"rnn_hidden_size\": 60.0, \"rnn_num_layers\": 8.0, \"stride\": 1, \"txt_length\": 784.0}": {
+    "dropout_pctg": 0.0,
+    "num_filters": 796,
+    "bottleneck_fc_dim": 598,
+    "glove_dim": 300,
+    "batch_norm": true,
+    "filter_sizes": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "rnn_hidden_size": 60,
+    "rnn_num_layers": 8,
+    "rnn_bidirectional": true,
+    "batch_size": 64,
+    "num_workers": 12,
+    "epochs": 20,
+    "txt_length": 784,
+    "train_start": "2019-01-05 14:08:35.115608",
+    "no_of_trainable_params": 7213092,
+    "train_session_hash": "0fac5848325e4abe3c47467dce21823c",
+    "f1_scores": {
+      "f1_score_2": 0.7217935054763035,
+      "f1_score_3": 0.8183912996662002,
+      "f1_score_4": 0.7704317674000315
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.9741138059701493,
+      "pAtK_3": 0.8440387348969438,
+      "pAtK_5": 0.5822761194029851
+    },
+    "train_vector": [
+      0.02394579893888522,
+      0.016825225078868564,
+      0.014797510096918605,
+      0.013282177745493323,
+      0.011754868068536515
+    ],
+    "valid_vector": [
+      0.01825351825568265,
+      0.01647701641040316,
+      0.016003397267698043,
+      0.016022541647233855,
+      0.016369140716326704
+    ],
+    "test_vector": [
+      0.018069086465309424,
+      0.01635041921588181,
+      0.015851346822554815,
+      0.015903143993596724,
+      0.01630617676676114
+    ],
+    "train_finish": "2019-01-05 15:48:46.025497",
+    "model": "CRNN(\n  (embedding): Embedding(400000, 300)\n  (convs): ModuleList(\n    (0): Conv2d(1, 796, kernel_size=(1, 300), stride=(1, 1))\n    (1): Conv2d(1, 796, kernel_size=(2, 300), stride=(1, 1))\n    (2): Conv2d(1, 796, kernel_size=(3, 300), stride=(1, 1))\n    (3): Conv2d(1, 796, kernel_size=(4, 300), stride=(1, 1))\n    (4): Conv2d(1, 796, kernel_size=(5, 300), stride=(1, 1))\n  )\n  (batch_norms): ModuleList(\n    (0): BatchNorm2d(796, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (1): BatchNorm2d(796, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (2): BatchNorm2d(796, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (3): BatchNorm2d(796, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (4): BatchNorm2d(796, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  )\n  (gru): GRU(300, 60, num_layers=8, batch_first=True, bidirectional=True)\n  (fc1): Linear(in_features=4940, out_features=598, bias=True)\n  (fc2): Linear(in_features=598, out_features=126, bias=True)\n  (dropout): Dropout(p=0.0)\n)"
+  },
+  "{\"dropout_pctg\": 0.01, \"num_filters\": 6, \"bottleneck_fc_dim\": 10, \"glove_dim\": 100, \"batch_norm\": false, \"filter_sizes\": [1], \"txt_length\": 20, \"stride\": 1, \"gpu_no\": 1, \"cpu_mode\": false, \"rnn_hidden_size\": 3, \"rnn_num_layers\": 1, \"rnn_bidirectional\": false, \"epochs\": 1}": {
+    "dropout_pctg": 0.01,
+    "num_filters": 6,
+    "bottleneck_fc_dim": 10,
+    "glove_dim": 100,
+    "batch_norm": false,
+    "filter_sizes": [
+      1
+    ],
+    "rnn_hidden_size": 3,
+    "rnn_num_layers": 1,
+    "rnn_bidirectional": false,
+    "batch_size": 64,
+    "num_workers": 12,
+    "epochs": 1,
+    "txt_length": 20,
+    "train_start": "2019-01-05 12:20:07.313997",
+    "no_of_trainable_params": 3049,
+    "train_session_hash": "0e45c22f4ffb5fea74edf054f35c9d6c",
+    "f1_scores": {
+      "f1_score_2": 0.468406928519151,
+      "f1_score_3": 0.48694949930009696,
+      "f1_score_4": 0.47928313817113083
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.7866138059701493,
+      "pAtK_3": 0.5022099324804549,
+      "pAtK_5": 0.3784248400852879
+    },
+    "train_vector": [
+      0.08762341721943533
+    ],
+    "valid_vector": [
+      0.06418919892532866
+    ],
+    "test_vector": [
+      0.06384901971673407
+    ],
+    "train_finish": "2019-01-05 12:21:31.869444",
+    "model": "CRNN(\n  (embedding): Embedding(400000, 100)\n  (convs): ModuleList(\n    (0): Conv2d(1, 6, kernel_size=(1, 100), stride=(1, 1))\n  )\n  (batch_norms): ModuleList(\n    (0): BatchNorm2d(6, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  )\n  (gru): GRU(100, 3, batch_first=True, dropout=0.01)\n  (fc1): Linear(in_features=9, out_features=10, bias=True)\n  (fc2): Linear(in_features=10, out_features=126, bias=True)\n  (dropout): Dropout(p=0.01)\n)"
+  },
+  "{\"batch_norm\": true, \"bottleneck_fc_dim\": 530.0, \"cpu_mode\": false, \"dropout_pctg\": 0.1776, \"epochs\": 20, \"filter_sizes\": [1, 2, 3], \"glove_dim\": 300, \"gpu_no\": 1, \"num_filters\": 762.0, \"rnn_bidirectional\": true, \"rnn_hidden_size\": 652.0, \"rnn_num_layers\": 1.0, \"stride\": 1, \"txt_length\": 775.0}": {
+    "dropout_pctg": 0.18,
+    "num_filters": 762,
+    "bottleneck_fc_dim": 530,
+    "glove_dim": 300,
+    "batch_norm": true,
+    "filter_sizes": [
+      1,
+      2,
+      3
+    ],
+    "rnn_hidden_size": 652,
+    "rnn_num_layers": 1,
+    "rnn_bidirectional": true,
+    "batch_size": 64,
+    "num_workers": 12,
+    "epochs": 20,
+    "txt_length": 775,
+    "train_start": "2019-01-05 12:21:32.543911",
+    "no_of_trainable_params": 7080642,
+    "train_session_hash": "3e5408c8a262291c11430ea31abb6640",
+    "f1_scores": {
+      "f1_score_2": 0.7213569420012582,
+      "f1_score_3": 0.8189189189189189,
+      "f1_score_4": 0.7713218182998174
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.97278118336887,
+      "pAtK_3": 0.8445828891257996,
+      "pAtK_5": 0.582795842217484
+    },
+    "train_vector": [
+      0.024522422156629642,
+      0.016864232985320696,
+      0.014754938896747432,
+      0.013250884166873967,
+      0.01206366778545185
+    ],
+    "valid_vector": [
+      0.01780163169181201,
+      0.016153606050374754,
+      0.01592947110143512,
+      0.016451834844224758,
+      0.017033416760846107
+    ],
+    "test_vector": [
+      0.017564620340127807,
+      0.01606286458694922,
+      0.015831404966292286,
+      0.016214815305986764,
+      0.016792302983981777
+    ],
+    "train_finish": "2019-01-05 13:20:57.479166",
+    "model": "CRNN(\n  (embedding): Embedding(400000, 300)\n  (convs): ModuleList(\n    (0): Conv2d(1, 762, kernel_size=(1, 300), stride=(1, 1))\n    (1): Conv2d(1, 762, kernel_size=(2, 300), stride=(1, 1))\n    (2): Conv2d(1, 762, kernel_size=(3, 300), stride=(1, 1))\n  )\n  (batch_norms): ModuleList(\n    (0): BatchNorm2d(762, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (1): BatchNorm2d(762, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (2): BatchNorm2d(762, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  )\n  (gru): GRU(300, 652, batch_first=True, dropout=0.18, bidirectional=True)\n  (fc1): Linear(in_features=3590, out_features=530, bias=True)\n  (fc2): Linear(in_features=530, out_features=126, bias=True)\n  (dropout): Dropout(p=0.18)\n)"
+  },
+  "{\"batch_norm\": true, \"bottleneck_fc_dim\": 440.0, \"cpu_mode\": false, \"dropout_pctg\": 0.030459794243966977, \"epochs\": 20, \"filter_sizes\": [2, 3, 4], \"glove_dim\": 300, \"gpu_no\": 1, \"num_filters\": 720.0, \"rnn_bidirectional\": true, \"rnn_hidden_size\": 125.0, \"rnn_num_layers\": 7.0, \"stride\": 1, \"txt_length\": 782.0}": {
+    "dropout_pctg": 0.03,
+    "num_filters": 720,
+    "bottleneck_fc_dim": 440,
+    "glove_dim": 300,
+    "batch_norm": true,
+    "filter_sizes": [
+      2,
+      3,
+      4
+    ],
+    "rnn_hidden_size": 125,
+    "rnn_num_layers": 7,
+    "rnn_bidirectional": true,
+    "batch_size": 64,
+    "num_workers": 12,
+    "epochs": 20,
+    "txt_length": 782,
+    "train_start": "2019-01-05 13:20:58.391605",
+    "no_of_trainable_params": 5743636,
+    "train_session_hash": "133c9c7e146f38906bcc31ea6adf5f1a",
+    "f1_scores": {
+      "f1_score_2": 0.7190714038083744,
+      "f1_score_3": 0.8157209001830517,
+      "f1_score_4": 0.7677245292465164
+    },
+    "pAtK_scores": {
+      "pAtK_1": 0.972547974413646,
+      "pAtK_3": 0.8412846481876333,
+      "pAtK_5": 0.580763592750533
+    },
+    "train_vector": [
+      0.02432156328396154,
+      0.01828685728100048,
+      0.017241702166688105,
+      0.015473422275810417,
+      0.014153918338116564,
+      0.012751488603220153,
+      0.011348288889682137
+    ],
+    "valid_vector": [
+      0.01834259321739369,
+      0.019173970173692892,
+      0.01748004479771619,
+      0.017170357020216378,
+      0.016499147050952446,
+      0.016641336034855316,
+      0.017175520021495208
+    ],
+    "test_vector": [
+      0.018104348268145436,
+      0.01882775544897834,
+      0.017203881145159066,
+      0.016962798434430795,
+      0.016385755418285505,
+      0.01647687264219689,
+      0.017021196949949014
+    ],
+    "train_finish": "2019-01-05 16:16:24.853923",
+    "model": "CRNN(\n  (embedding): Embedding(400000, 300)\n  (convs): ModuleList(\n    (0): Conv2d(1, 720, kernel_size=(2, 300), stride=(1, 1))\n    (1): Conv2d(1, 720, kernel_size=(3, 300), stride=(1, 1))\n    (2): Conv2d(1, 720, kernel_size=(4, 300), stride=(1, 1))\n  )\n  (batch_norms): ModuleList(\n    (0): BatchNorm2d(720, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (1): BatchNorm2d(720, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n    (2): BatchNorm2d(720, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)\n  )\n  (gru): GRU(300, 125, num_layers=7, batch_first=True, dropout=0.03, bidirectional=True)\n  (fc1): Linear(in_features=3910, out_features=440, bias=True)\n  (fc2): Linear(in_features=440, out_features=126, bias=True)\n  (dropout): Dropout(p=0.03)\n)"
+  }
+}
