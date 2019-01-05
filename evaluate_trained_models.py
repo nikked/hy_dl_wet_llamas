@@ -44,7 +44,7 @@ def main():
             model_params['train_session_hash'] + '.pkl'
         )
 
-        model.load_state_dict(torch.load(pkld_file_path, map_location='cpu'))
+        model.load_state_dict(torch.load(pkld_file_path, map_location='cuda'))
 
         accuracy, f1_score = measure(model, test_loader)
 
@@ -55,7 +55,7 @@ def main():
 
 
 # Measure model accuracy and F1-score
-def measure(model, data_loader, device=torch.device('cpu')):
+def measure(model, data_loader, device=torch.device('cuda')):
     model.eval()
     accuracy = 0
     prediction = torch.tensor([], device=device)
