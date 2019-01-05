@@ -89,26 +89,9 @@ def test_grid_search():
 
 def run_best_models():
 
-    gpu_no = 1
+    gpu_no = 0
 
     spaces = [
-        {
-            "dropout_pctg": 0.01,
-            "num_filters": 6,
-            "bottleneck_fc_dim": 10,
-            "glove_dim": 100,
-            "batch_norm": False,
-            "filter_sizes": [1],
-            "txt_length": 20,
-            "stride": 1,
-            "gpu_no": gpu_no,
-            "cpu_mode": False,
-            "rnn_hidden_size": 3,
-            "rnn_num_layers": 1,
-            "rnn_bidirectional": False,
-            "epochs": 1
-        },
-
         {
             "batch_norm": True,
             "bottleneck_fc_dim": 530.0,
@@ -131,23 +114,47 @@ def run_best_models():
         },
         {
             "batch_norm": True,
-            "bottleneck_fc_dim": 440.0,
+            "bottleneck_fc_dim": 517.0,
             "cpu_mode": False,
-            "dropout_pctg": 0.030459794243966977,
+            "dropout_pctg": 0.0406,
             "epochs": 20,
             "filter_sizes": [
+                1,
                 2,
                 3,
-                4
+                4,
+                5
+            ],
+            "glove_dim": 200,
+            "gpu_no": gpu_no,
+            "num_filters": 1144.0,
+            "rnn_bidirectional": True,
+            "rnn_hidden_size": 173.0,
+            "rnn_num_layers": 1.0,
+            "stride": 1,
+            "txt_length": 728.0
+        },
+        {
+            "batch_norm": True,
+            "bottleneck_fc_dim": 598.0,
+            "cpu_mode": False,
+            "dropout_pctg": 0.0031,
+            "epochs": 20,
+            "filter_sizes": [
+                1,
+                2,
+                3,
+                4,
+                5
             ],
             "glove_dim": 300,
             "gpu_no": gpu_no,
-            "num_filters": 720.0,
+            "num_filters": 796.0,
             "rnn_bidirectional": True,
-            "rnn_hidden_size": 125.0,
-            "rnn_num_layers": 7.0,
+            "rnn_hidden_size": 60.0,
+            "rnn_num_layers": 8.0,
             "stride": 1,
-            "txt_length": 782.0
+            "txt_length": 784.0
         }
 
     ]
