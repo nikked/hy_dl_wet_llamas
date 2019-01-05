@@ -25,7 +25,7 @@ def evaluate_f1_scores():
 
         model = load_pretrained_model(model_params, glove)
 
-        train_loader, validation_loader, test_loader = get_loaders(glove)
+        train_loader, validation_loader, test_loader = get_loaders_with_df(glove, model_params)
 
         accuracy, f1_score = measure(model, test_loader)
 
@@ -100,14 +100,14 @@ def make_predictions():
 
     model = load_pretrained_model(model_params, glove)
 
-    train_loader, validation_loader, test_loader = get_loaders(glove)
+    train_loader, validation_loader, test_loader = get_loaders_with_df(glove, model_params)
 
     predictions = predict(model, test_loader, device=torch.device('cuda'))
 
     pprint(predictions)
 
 
-def get_loaders(glove):
+def get_loaders_with_df(glove, model_params):
     df = load_training_set_as_df(DF_FILEPATH)
 
     txt_length = model_params['txt_length']
@@ -183,4 +183,4 @@ def get_top_model_params():
 
 
 if __name__ == '__main__':
-    evaluate_f1_scores()
+    make_predictions()
