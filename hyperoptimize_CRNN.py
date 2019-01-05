@@ -12,6 +12,7 @@ from hyperopt import hp, tpe, fmin, space_eval, Trials
 from hyperopt.mongoexp import MongoTrials
 from pprint import pprint
 import os
+import hashlib
 
 from src.ReutersDataset import ReutersDataset
 from src.ReutersModel import ReutersModel, ReutersModelStacked, CRNN
@@ -24,6 +25,10 @@ DF_FILEPATH = 'train/train.json.xz'
 LOG_DIR = 'log_jsons'
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
+MODELS_DIR = 'trained_models'
+if not os.path.exists(MODELS_DIR):
+    os.makedirs(MODELS_DIR)
+
 LOG_FP = os.path.join(LOG_DIR, f'modelstats_CRNN_{str(datetime.now())}.json')
 
 
@@ -80,6 +85,75 @@ def test_grid_search():
     }
 
     train_model(space)
+
+
+def run_best_models():
+
+    gpu_no = 1
+
+    spaces = [
+        {
+            "dropout_pctg": 0.01,
+            "num_filters": 6,
+            "bottleneck_fc_dim": 10,
+            "glove_dim": 100,
+            "batch_norm": False,
+            "filter_sizes": [1],
+            "txt_length": 20,
+            "stride": 1,
+            "gpu_no": gpu_no,
+            "cpu_mode": False,
+            "rnn_hidden_size": 3,
+            "rnn_num_layers": 1,
+            "rnn_bidirectional": False,
+            "epochs": 1
+        },
+
+        {
+            "batch_norm": True,
+            "bottleneck_fc_dim": 530.0,
+            "cpu_mode": False,
+            "dropout_pctg": 0.1776,
+            "epochs": 20,
+            "filter_sizes": [
+                1,
+                2,
+                3
+            ],
+            "glove_dim": 300,
+            "gpu_no": gpu_no,
+            "num_filters": 762.0,
+            "rnn_bidirectional": True,
+            "rnn_hidden_size": 652.0,
+            "rnn_num_layers": 1.0,
+            "stride": 1,
+            "txt_length": 775.0
+        },
+        {
+            "batch_norm": True,
+            "bottleneck_fc_dim": 440.0,
+            "cpu_mode": False,
+            "dropout_pctg": 0.030459794243966977,
+            "epochs": 20,
+            "filter_sizes": [
+                2,
+                3,
+                4
+            ],
+            "glove_dim": 300,
+            "gpu_no": gpu_no,
+            "num_filters": 720.0,
+            "rnn_bidirectional": True,
+            "rnn_hidden_size": 125.0,
+            "rnn_num_layers": 7.0,
+            "stride": 1,
+            "txt_length": 782.0
+        }
+
+    ]
+
+    for space in spaces:
+        train_model(space)
 
 
 def train_model(
@@ -162,6 +236,14 @@ def train_model(
         print(f"Starting training: {train_session_name}")
         print(f'No of trainable params in model: {total_trainable_params}')
         train_vector, valid_vector, test_vector = [], [], []
+
+        lowest_loss = 9999
+        train_session_hash = hashlib.md5(
+            train_session_name.encode()).hexdigest()
+        model_path = os.path.join(
+            MODELS_DIR,
+            train_session_hash + '.pkl')
+
         for epoch in range(1, epochs + 1):
             print(f'Training epoch no {epoch}/{epochs}')
             train(device, model, epoch, train_loader, optimizer,
@@ -172,6 +254,14 @@ def train_model(
             validate(device, model, test_loader,
                      criterion, test_vector, 'Test')
             print('\n')
+
+            valid_loss = min(valid_vector)
+
+            if valid_loss < lowest_loss:
+                lowest_loss = valid_loss
+
+                print('Saving model to path')
+                torch.save(model.state_dict(), model_path)
 
             # Make an early quit if the loss is not improving
             if valid_vector.index(min(valid_vector)) < len(valid_vector) - 2:
@@ -237,6 +327,9 @@ if __name__ == '__main__':
 
     if args.test_mode:
         test_grid_search()
+
+    if args.run_best_models:
+        run_best_models()
 
     elif args.cpu_mode:
         grid_search(cpu_mode=args.cpu_mode)
