@@ -5,11 +5,12 @@ import json
 from sklearn import metrics
 import torch
 from torchtext import vocab
-from src.gridsearch_util import load_training_set_as_df, get_loaders
+from src.gridsearch_util import load_training_set_as_df, get_loaders, get_competition_loader
 from src.ReutersModel import CRNN
 
 
 DF_FILEPATH = 'train/train.json.xz'
+DF_COMPETITION_FILE_PATH = 'competition.json.xz'
 BATCH_SIZE = 64
 NUM_WORKERS = 12
 MODELS_DIR = 'trained_models'
@@ -48,10 +49,15 @@ def make_predictions():
 
     model = load_pretrained_model(model_params, glove)
 
-    train_loader, validation_loader, test_loader = get_loaders_with_df(
-        glove, model_params)
+    df = load_training_set_as_df(DF_COMPETITION_FILE_PATH)
+    df['codes'] = [[]] * len(df)
+    txt_length = model_params['txt_length']
 
-    predictions = predict(model, test_loader, device=torch.device('cuda'))
+    competition_loader = get_competition_loader(
+        df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
+
+    predictions = predict(model, competition_loader,
+                          device=torch.device('cuda'))
 
     pprint(predictions)
 
@@ -145,4 +151,3 @@ if __name__ == '__main__':
 
     else:
         make_predictions()
-

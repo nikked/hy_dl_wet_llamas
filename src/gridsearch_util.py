@@ -33,6 +33,21 @@ def _clean_df(df):
     return df
 
 
+def get_competition_loader(df, batch_size, num_workers, max_txt_len, glove):
+
+    competition_set = ReutersDataset(
+        df, max_txt_len=max_txt_len, glove=glove)
+
+    competition_loader = torch.utils.data.DataLoader(
+        dataset=competition_set,
+        batch_size=batch_size,
+        collate_fn=_pad_collate,
+        num_workers=num_workers,
+        shuffle=False)
+
+    return competition_loader
+
+
 def get_loaders(df, batch_size, num_workers, max_txt_len, glove):
 
     random_state = 42
