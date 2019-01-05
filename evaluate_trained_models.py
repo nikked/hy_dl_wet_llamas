@@ -36,6 +36,9 @@ def main():
                      model_params['rnn_num_layers'],
                      model_params['rnn_bidirectional']
                      )
+
+        model = model.to(torch.device('cuda'))
+
         train_loader, validation_loader, test_loader = get_loaders(
             df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
 
