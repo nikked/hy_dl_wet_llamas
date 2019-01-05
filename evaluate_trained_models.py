@@ -96,10 +96,11 @@ def load_pretrained_model(model_params, glove):
 def predict(model, data_loader, device=torch.device('cuda')):
     model.eval()
     prediction = torch.tensor([], device=device)
-    for (X, _) in data_loader:
-        X = X.to(device)
-        output = model(X)
-        prediction = torch.cat((prediction, output.sigmoid().round()))
+    with torch.no_grad():
+        for (X, _) in data_loader:
+            X = X.to(device)
+            output = model(X)
+            prediction = torch.cat((prediction, output.sigmoid().round()))
     return prediction.cpu().numpy()
 
 
