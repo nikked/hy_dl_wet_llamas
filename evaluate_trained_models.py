@@ -1,3 +1,4 @@
+import numpy as np
 from pprint import pprint
 import argparse
 import os
@@ -49,6 +50,9 @@ def make_predictions():
 
     model = load_pretrained_model(model_params, glove)
 
+
+    print(f'Fetching df from: {DF_COMPETITION_FILE_PATH}')
+
     df = load_training_set_as_df(DF_COMPETITION_FILE_PATH)
     df['codes'] = [[]] * len(df)
     txt_length = model_params['txt_length']
@@ -56,11 +60,13 @@ def make_predictions():
     competition_loader = get_competition_loader(
         df, BATCH_SIZE, NUM_WORKERS, txt_length, glove)
 
+    print('Fetched competition loader... Predicting')
+
     predictions = predict(model, competition_loader,
                           device=torch.device('cuda'))
 
-    pprint(predictions)
 
+    np.savetxt('competition_results.txt', predictions, fmt='%d')
 
 def get_loaders_with_df(glove, model_params):
     df = load_training_set_as_df(DF_FILEPATH)
