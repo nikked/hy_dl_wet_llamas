@@ -1,4 +1,5 @@
-# News topic classification from Reuters articles
+# Wet Llamas: Text project
+> News topic classification from Reuters articles
 
 * `competition_results.txt`: Our test set output made with our best model
 * `hyperoptimize_CRNN.py`: the train runner for our best model, the CRNN. This file contains the training process including hyperoptimization, the training itself and logging
