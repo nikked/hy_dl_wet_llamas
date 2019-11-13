@@ -26,22 +26,16 @@ def initialize_topic_codes():
 
 topic_codes, topic_desc = initialize_topic_codes()
 
-# pprint(topic_desc)
-# pprint(topic_codes)
 
 
 df = load_training_set_as_df(DF_COMPETITION_FILE_PATH)
-# print(df.head())
 
 
 results = np.loadtxt('competition_results.txt')
 
 results_tf = results == 1
 
-# print(results_tf)
-
 argwheres = np.argwhere(results)
-
 
 for row in range(len(results_tf)):
 
