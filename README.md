@@ -4,7 +4,7 @@ This repository consists of the code for a text classification competition organ
 
 The task consists of classifying news articles from Reuters to topic codes. It is a multi-label classification problem: each article can correspond to none, one or multiple topics. We solved this problem with a deep neural network architecture we call CRNN, a hybrid model of a convolutional and a recurrent network.
 
-Our award-winning was quite fancy. For tokenization, we used pre-trained GloVe-embeddings. We optimized the model's various hyperparameters with hyperopt. We used a powerful NVIDIA Quadro P4000 GPU for training. As a result, we achieved 97% accuracy for one label prediction.
+Our award-winning was quite fancy. For tokenization, we used pre-trained [GloVe-embeddings](https://github.com/stanfordnlp/GloVe). We optimized the model's various hyperparameters with [hyperopt](https://github.com/hyperopt/hyperopt). We used a powerful NVIDIA Quadro P4000 GPU for training. As a result, we achieved 97% accuracy for one label prediction.
 
 For more details, please refer to the [our full report of the competition entry.](https://github.com/nikked/hy_dl_wet_llamas/blob/master/reuters_article_classification.pdf)
 
