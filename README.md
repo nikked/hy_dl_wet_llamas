@@ -16,7 +16,7 @@ For more details, please refer to the [our full report of the competition entry.
 * `src/topic_codes.txt`: The topic codes we were trying to predict
 * `evaluate_trained_models.py`: A script for evaluating the f1 scores and accuracy of trained models. It also makes outputs predictions with the `-p` argument.
 * `evaluate_topic_reasonability.py`: A script that returns the article text and its predicted label names. Used for evaluating whether the model's predictions seem reasonable to a human reader.
-* `CRNN_training_log.json`: This file shows an excerpt of the output of the gridsearch we did for our CRNN model
+* `final_model_training_log.json`: This file shows the training performances of the three best performing sets of hyperparameters
 * `competition/`: This directory contains the competition test set and our predictions
 
 ## Requirements
